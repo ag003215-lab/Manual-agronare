@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Empresarial - Agronare</title>
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            color: #1E293B;
+            background-attachment: fixed;
+            background-size: cover;
+            background-image: url('');
+        }
+
+        .font-jakarta {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .nav-link {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding-bottom: 8px;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-link.active {
+            border-bottom-color: #047857;
+            color: #047857;
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .flowchart-step {
+            position: relative;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #E2E8F0;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            min-width: 220px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left-width: 6px;
+            border-left-color: #10b981;
+        }
+
+        .flowchart-step:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 25px 30px -10px rgba(0, 0, 0, 0.2);
+            border-left-width: 8px;
+        }
+
+        .flowchart-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            height: 4px;
+            background: linear-gradient(90deg, #94A3B8 0%, #64748B 50%, #94A3B8 100%);
+            position: relative;
+            border-radius: 9999px;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .flowchart-arrow::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 12px solid #64748B;
+            filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+        }
+
+        @media (max-width: 767px) {
+            .flowchart-arrow {
+                width: 4px;
+                height: 50px;
+                min-height: 50px;
+                background: linear-gradient(180deg, #94A3B8 0%, #64748B 50%, #94A3B8 100%);
+                margin: 0 auto;
+                flex-grow: 0;
+            }
+
+            .flowchart-arrow::after {
+                left: 50%;
+                transform: translateX(-50%);
+                top: 100%;
+                border-left: 10px solid transparent;
+                border-right: 10px solid transparent;
+                border-top: 12px solid #64748B;
+                border-bottom: 0;
+            }
+        }
+
+        .organigram-node {
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+            border: 2px solid #047857;
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+            min-width: 240px;
+            box-shadow: 0 15px 25px -8px rgba(0, 0, 0, 0.15), 0 8px 10px -5px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom-width: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .organigram-node::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #10b981, #047857);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .organigram-node:hover::before {
+            transform: scaleX(1);
+        }
+
+        .organigram-node:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .organigram-details {
+            background: rgba(241, 245, 249, 0.95);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-top: 1rem;
+            border: 1px solid #e2e8f0;
+            font-size: 0.875rem;
+            border-left-width: 5px;
+            border-left-color: #047857;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            animation: slideDown 0.4s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .kpi-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #166534;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin: 0.5rem 0.375rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(187, 247, 208, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .kpi-badge:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .collaboration-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+            color: #5b21b6;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin: 0.5rem 0.375rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(221, 214, 254, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .collaboration-badge:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .process-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid #e2e8f0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-top-width: 5px;
+            border-top-color: #047857;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .process-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #10b981, #047857);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s ease;
+        }
+
+        .process-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .process-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 35px 70px -20px rgba(0, 0, 0, 0.3);
+            z-index: 5;
+        }
+
+        .system-table th {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            color: #047857;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.875rem;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 3px solid #a7f3d0;
+            position: relative;
+        }
+
+        .system-table th::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #10b981, transparent);
+        }
+
+        .system-table td {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .system-table tr:hover {
+            background-color: #f8fafc;
+            transform: scale(1.01);
+        }
+
+        .accordion-button {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .accordion-button svg {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .accordion-button[aria-expanded="true"] svg {
+            transform: rotate(180deg);
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 2rem;
+            padding: 2rem;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e2e8f0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-top-width: 8px;
+            border-top-color: #10b981;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.25);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #047857 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #047857 0%, #10b981 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px -3px rgba(4, 120, 87, 0.4);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.8s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px -6px rgba(4, 120, 87, 0.6);
+        }
+
+        .badge-new {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 0.75rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 100;
+            transition: opacity 1.5s ease-in-out;
+            opacity: 1;
+        }
+
+        .welcome-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .welcome-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #047857 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 2s infinite ease-in-out;
+            text-align: center;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.08);
+            }
+        }
+
+        .enter-button {
+            background: linear-gradient(135deg, #047857 0%, #10b981 100%);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 1.125rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 25px -5px rgba(4, 120, 87, 0.4);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        .enter-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 1s;
+        }
+
+        .enter-button:hover::before {
+            left: 100%;
+        }
+
+        .enter-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px -8px rgba(4, 120, 87, 0.6);
+        }
+
+        .main-content {
+            opacity: 0;
+            transition: opacity 1s ease-out;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #047857 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #047857;
+        }
+
+        .floating-icon {
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.2;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+
+            100% {
+                transform: translateY(0px) rotate(360deg);
+            }
+        }
+
+        .floating-1 {
+            position: fixed;
+            top: 20%;
+            left: 10%;
+            opacity: 0.1;
+            animation-delay: 0s;
+        }
+
+        .floating-2 {
+            position: fixed;
+            top: 70%;
+            right: 15%;
+            opacity: 0.1;
+            animation-delay: 2s;
+        }
+
+        .floating-3 {
+            position: fixed;
+            bottom: 20%;
+            left: 20%;
+            opacity: 0.1;
+            animation-delay: 4s;
+        }
+
+        .process-highlight {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-left: 6px solid #f59e0b;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.1);
+        }
+
+        .timeline-step {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-step::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #10b981, #047857);
+            border: 3px solid white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-step::after {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 2.5rem;
+            width: 2px;
+            height: calc(100% + 1rem);
+            background: linear-gradient(to bottom, #10b981, #e2e8f0);
+            z-index: -1;
+        }
+
+        .timeline-step:last-child::after {
+            display: none;
+        }
+
+        .quality-principle {
+            border-left: 4px solid #10b981;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #f0fdf4 0%, #f0fdf4 100%);
+            transition: all 0.3s ease;
+        }
+
+        .quality-principle:hover {
+            transform: translateX(8px);
+            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.2);
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+    <!-- Pantalla de Bienvenida -->
+    <div id="welcome-screen" class="welcome-screen">
+        <h1 class="welcome-title">Sistema de Gestión<br>Empresarial</h1>
+        <p class="text-2xl text-emerald-800 font-semibold mb-8 text-center">Agronare</p>
+        <button id="enter-button" class="enter-button">
+            Ingresar al Sistema
+        </button>
+
+        <!-- Iconos flotantes decorativos -->
+        <i data-lucide="target" class="w-16 h-16 floating-icon floating-1"></i>
+        <i data-lucide="bar-chart-3" class="w-16 h-16 floating-icon floating-2"></i>
+        <i data-lucide="sitemap" class="w-16 h-16 floating-icon floating-3"></i>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div id="main-content" class="main-content">
+        <header class="bg-white/95 sticky top-0 z-50 shadow-xl backdrop-blur-lg border-b border-emerald-100">
+            <div class="container mx-auto px-6 py-5 flex justify-between items-center">
+                <a href="#" class="text-4xl font-bold gradient-text" aria-label="Inicio">
+                    <span>AGRO</span><span class="text-emerald-800">NARE</span>
+                </a>
+                <p class="hidden md:block font-semibold text-gray-600 text-xl">Sistema de Gestión Integral Avanzada</p>
+                <button id="menu-mobile-button"
+                    class="md:hidden text-gray-700 focus:outline-none hover:text-emerald-600 transition-colors duration-300"
+                    aria-label="Menú principal">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <div class="container mx-auto px-6 pt-12 pb-20">
+            <div class="bg-white/95 rounded-3xl shadow-2xl border border-gray-200/50 overflow-hidden">
+                <nav id="main-tabs"
+                    class="flex flex-wrap justify-center border-b border-gray-200 p-8 space-x-6 md:space-x-10">
+                    <button data-tab="historia"
+                        class="nav-link active text-xl font-semibold px-6 py-3 rounded-2xl transition-all duration-300"
+                        aria-label="Ir a la sección de Historia">
+                        <i data-lucide="book-open" class="w-6 h-6 inline mr-3"></i>1. Historia
+                    </button>
+                    <button data-tab="estrategia"
+                        class="nav-link text-xl font-semibold px-6 py-3 rounded-2xl transition-all duration-300"
+                        aria-label="Ir a la sección de Estrategia">
+                        <i data-lucide="target" class="w-6 h-6 inline mr-3"></i>2. Estrategia
+                    </button>
+                    <button data-tab="objetivos"
+                        class="nav-link text-xl font-semibold px-6 py-3 rounded-2xl transition-all duration-300"
+                        aria-label="Ir a la sección de Objetivos y KPIs">
+                        <i data-lucide="bar-chart-3" class="w-6 h-6 inline mr-3"></i>3. Objetivos y KPIs
+                    </button>
+                    <button data-tab="estructura"
+                        class="nav-link text-xl font-semibold px-6 py-3 rounded-2xl transition-all duration-300"
+                        aria-label="Ir a la sección de Estructura y roles">
+                        <i data-lucide="sitemap" class="w-6 h-6 inline mr-3"></i>4. Estructura y roles
+                    </button>
+                    <button data-tab="procesos"
+                        class="nav-link text-xl font-semibold px-6 py-3 rounded-2xl transition-all duration-300"
+                        aria-label="Ir a la sección de Procesos Operativos">
+                        <i data-lucide="git-merge" class="w-6 h-6 inline mr-3"></i>5. Procesos Operativos
+                    </button>
+                    <button data-tab="sistemas"
+                        class="nav-link text-xl font-semibold px-6 py-3 rounded-2xl transition-all duration-300"
+                        aria-label="Ir a la sección de Tecnología y Calidad">
+                        <i data-lucide="database" class="w-6 h-6 inline mr-3"></i>6. Tecnología y Calidad
+                    </button>
+                </nav>
+
+                <div class="p-10 md:p-16">
+                    <!-- Pestaña 1: Historia -->
+                    <section id="historia" class="tab-content active">
+                        <div class="text-center mb-20">
+                            <h2 class="text-5xl font-bold text-emerald-800 mb-6">La Historia de Agronare</h2>
+                            <p class="text-2xl text-gray-600 max-w-5xl mx-auto leading-relaxed">Desde una idea en el
+                                campo hasta una empresa líder en tecnología agrícola. Nuestra historia es un compromiso
+                                con la innovación y la sostenibilidad.</p>
+                        </div>
+
+                        <div class="prose max-w-none text-gray-700 text-lg leading-relaxed space-y-12">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                                <div class="space-y-8">
+                                    <div class="timeline-step">
+                                        <h3 class="text-2xl font-bold text-emerald-800 mb-3">Fundación (2015)</h3>
+                                        <p class="text-gray-600 leading-relaxed">Con apenas $50,000 de inversión
+                                            inicial, el ingeniero agrónomo Carlos Mendoza fundó Agronare en su granja
+                                            familiar en Jalisco. Su visión era simple pero revolucionaria: combinar
+                                            conocimiento tradicional con tecnología moderna para crear soluciones
+                                            agrícolas sostenibles.</p>
+                                    </div>
+                                    <div class="timeline-step">
+                                        <h3 class="text-2xl font-bold text-emerald-800 mb-3">Primer Producto (2016)</h3>
+                                        <p class="text-gray-600 leading-relaxed">Lanzamos nuestro primer producto:
+                                            "BioRaíz", un estimulador natural del crecimiento radicular que aumentaba la
+                                            productividad hasta en un 40%. La aceptación fue inmediata entre pequeños
+                                            agricultores.</p>
+                                    </div>
+                                    <div class="timeline-step">
+                                        <h3 class="text-2xl font-bold text-emerald-800 mb-3">Expansión Regional (2018)
+                                        </h3>
+                                        <p class="text-gray-600 leading-relaxed">Después de obtener certificación
+                                            orgánica, expandimos a 8 estados mexicanos. Nuestro modelo de asesoramiento
+                                            técnico personalizado se convirtió en nuestro diferenciador clave.</p>
+                                    </div>
+                                </div>
+                                <div class="relative">
+                                    <img src="agronare-interior.jpg" alt="Interior de la tienda de Agronare"
+                                        class="rounded-2xl shadow-2xl w-full mb-8">
+                                    <img src="agronare-fachada.jpg" alt="Fachada de Agronare"
+                                        class="rounded-2xl shadow-2xl w-full">
+                                </div>
+                            </div>
+
+                            <div
+                                class="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-3xl p-12 border border-emerald-200">
+                                <div class="flex items-start">
+                                    <i data-lucide="lightbulb"
+                                        class="w-12 h-12 text-emerald-600 mr-6 mt-2 flex-shrink-0"></i>
+                                    <div>
+                                        <h3 class="text-3xl font-bold text-emerald-800 mb-4">Momento Decisivo</h3>
+                                        <p class="text-xl text-gray-700 leading-relaxed">En 2020, durante la pandemia,
+                                            mientras muchas empresas reducían operaciones, nosotros invertimos en I+D.
+                                            Desarrollamos un sistema de monitoreo remoto para cultivos que permitía a
+                                            los agricultores gestionar sus tierras desde casa. Esta innovación no solo
+                                            salvó temporadas completas, sino que sentó las bases para nuestra
+                                            transformación digital.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <h3 class="text-3xl font-bold text-emerald-800 mb-8">Nuestros Logros</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                    <div
+                                        class="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300">
+                                        <div class="text-5xl font-bold text-emerald-600 mb-2">7</div>
+                                        <div class="text-xl font-semibold text-gray-800">Productos Innovadores</div>
+                                        <p class="text-gray-600 mt-2">Desarrollados con enfoque científico y validación
+                                            en campo</p>
+                                    </div>
+                                    <div
+                                        class="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300">
+                                        <div class="text-5xl font-bold text-emerald-600 mb-2">24</div>
+                                        <div class="text-xl font-semibold text-gray-800">Estados Cubiertos</div>
+                                        <p class="text-gray-600 mt-2">Red de distribución nacional con presencia
+                                            estratégica</p>
+                                    </div>
+                                    <div
+                                        class="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300">
+                                        <div class="text-5xl font-bold text-emerald-600 mb-2">98%</div>
+                                        <div class="text-xl font-semibold text-gray-800">Satisfacción Clientes</div>
+                                        <p class="text-gray-600 mt-2">Índice promedio basado en encuestas trimestrales
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Pestaña 2: Estrategia -->
+                    <section id="estrategia" class="tab-content">
+                        <div class="text-center mb-16">
+                            <h2 class="text-5xl font-bold text-emerald-800 mb-6">Dirección Estratégica</h2>
+                            <p class="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">Nuestra base para la
+                                toma de decisiones y el crecimiento sostenible, alineando la misión, visión y análisis
+                                del entorno para crear valor duradero en el sector agrícola.</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
+                            <div
+                                class="bg-gradient-to-br from-emerald-50 to-teal-50 p-10 border border-emerald-200 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4">
+                                <div class="flex items-center mb-6">
+                                    <i data-lucide="flag" class="w-12 h-12 text-emerald-600 mr-4"></i>
+                                    <h3 class="text-3xl font-bold text-emerald-800">Misión</h3>
+                                </div>
+                                <p class="text-gray-700 text-xl leading-relaxed">Ofrecer soluciones agrícolas
+                                    sostenibles e innovadoras que mejoren la rentabilidad de los agricultores,
+                                    promoviendo la salud del suelo y la seguridad alimentaria para las generaciones
+                                    futuras mediante tecnología accesible y asesoramiento experto.</p>
+                            </div>
+                            <div
+                                class="bg-gradient-to-br from-emerald-50 to-teal-50 p-10 border border-emerald-200 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4">
+                                <div class="flex items-center mb-6">
+                                    <i data-lucide="rocket" class="w-12 h-12 text-emerald-600 mr-4"></i>
+                                    <h3 class="text-3xl font-bold text-emerald-800">Visión 2030</h3>
+                                </div>
+                                <p class="text-gray-700 text-xl leading-relaxed">Ser la empresa líder en soluciones
+                                    orgánicas agrícolas en Latinoamérica, reconocida por nuestra tecnología disruptiva,
+                                    calidad excepcional y el éxito tangible de nuestros clientes, con una huella
+                                    ambiental positiva que regenere ecosistemas.</p>
+                            </div>
+                            <div
+                                class="bg-gradient-to-br from-emerald-50 to-teal-50 p-10 border border-emerald-200 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4">
+                                <div class="flex items-center mb-6">
+                                    <i data-lucide="heart" class="w-12 h-12 text-emerald-600 mr-4"></i>
+                                    <h3 class="text-3xl font-bold text-emerald-800">Valores</h3>
+                                </div>
+                                <p class="text-gray-700 text-xl leading-relaxed">Innovación audaz, Sostenibilidad
+                                    regenerativa, Compromiso con el Cliente, Integridad absoluta, Excelencia Operativa,
+                                    Responsabilidad Ambiental y Desarrollo Comunitario. Vivimos estos valores en cada
+                                    decisión.</p>
+                            </div>
+                        </div>
+
+                        <h3 class="text-4xl font-bold text-emerald-800 text-center mb-12">Análisis FODA Estratégico</h3>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div
+                                class="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-3xl p-10 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4">
+                                <div class="flex items-center mb-8">
+                                    <i data-lucide="shield-check" class="w-14 h-14 text-green-600 mr-5"></i>
+                                    <h4 class="text-3xl font-bold text-green-700">Fortalezas Clave</h4>
+                                </div>
+                                <ul class="list-disc list-inside space-y-5 mb-8 text-gray-700 text-xl">
+                                    <li>Experiencia técnica del fundador con más de 20 años en el sector agrícola y
+                                        múltiples publicaciones científicas.</li>
+                                    <li>Productos innovadores y sostenibles certificados como orgánicos y con protección
+                                        de propiedad intelectual.</li>
+                                    <li>Asesoramiento técnico personalizado y continuo a nuestros clientes con
+                                        seguimiento post-venta.</li>
+                                    <li>Red de distribución establecida en 15 estados del país con centros regionales de
+                                        soporte.</li>
+                                    <li>Relación directa con más de 200 comunidades agrícolas que actúan como
+                                        laboratorios vivos.</li>
+                                </ul>
+                                <div class="border-t-2 border-green-200 pt-8">
+                                    <h5 class="font-bold text-green-800 text-2xl mb-4 flex items-center">
+                                        <i data-lucide="lightbulb" class="w-6 h-6 mr-3"></i>
+                                        Implicaciones Estratégicas (FO):
+                                    </h5>
+                                    <p class="text-gray-600 text-lg leading-relaxed">Capitalizar nuestra experiencia
+                                        técnica para desarrollar productos patentables que satisfagan la demanda
+                                        orgánica creciente y expandirnos a nuevos mercados internacionales mediante
+                                        alianzas estratégicas con cooperativas agrícolas latinoamericanas.</p>
+                                </div>
+                            </div>
+                            <div
+                                class="bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-3xl p-10 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4">
+                                <div class="flex items-center mb-8">
+                                    <i data-lucide="trending-up" class="w-14 h-14 text-blue-600 mr-5"></i>
+                                    <h4 class="text-3xl font-bold text-blue-700">Oportunidades de Mercado</h4>
+                                </div>
+                                <ul class="list-disc list-inside space-y-5 mb-8 text-gray-700 text-xl">
+                                    <li>Creciente demanda global de productos orgánicos y sostenibles proyectada en 12%
+                                        anual hasta 2030.</li>
+                                    <li>Acceso a nuevos mercados mediante alianzas con cooperativas agrícolas y
+                                        plataformas B2B digitales.</li>
+                                    <li>Incentivos gubernamentales a la agricultura sostenible y tecnológica que superan
+                                        los $50M anuales.</li>
+                                    <li>Desarrollo de plataformas digitales para comercio electrónico B2B con
+                                        inteligencia predictiva.</li>
+                                    <li>Colaboración con universidades para investigación conjunta y acceso a talento
+                                        especializado.</li>
+                                </ul>
+                                <div class="border-t-2 border-blue-200 pt-8">
+                                    <h5 class="font-bold text-blue-800 text-2xl mb-4 flex items-center">
+                                        <i data-lucide="zap" class="w-6 h-6 mr-3"></i>
+                                        Implicaciones Estratégicas (DO):
+                                    </h5>
+                                    <p class="text-gray-600 text-lg leading-relaxed">Buscar financiamiento o alianzas
+                                        estratégicas para fortalecer el capital y mejorar la visibilidad de mercado,
+                                        aprovechando la demanda creciente y las tendencias de consumo responsable
+                                        mediante una narrativa de impacto social y ambiental.</p>
+                                </div>
+                            </div>
+                            <div
+                                class="bg-gradient-to-br from-yellow-50 to-amber-50 border border-yellow-200 rounded-3xl p-10 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4">
+                                <div class="flex items-center mb-8">
+                                    <i data-lucide="alert-triangle" class="w-14 h-14 text-yellow-600 mr-5"></i>
+                                    <h4 class="text-3xl font-bold text-yellow-700">Debilidades a Superar</h4>
+                                </div>
+                                <ul class="list-disc list-inside space-y-5 mb-8 text-gray-700 text-xl">
+                                    <li>Alta dependencia de financiamiento externo para expansión y desarrollo de
+                                        productos.</li>
+                                    <li>Visibilidad de marca limitada a nivel nacional con escasa presencia digital
+                                        internacional.</li>
+                                    <li>Procesos operativos parcialmente estandarizados sin integración de sistemas
+                                        automatizados.</li>
+                                    <li>Infraestructura tecnológica básica sin plataforma ERP ni CRM centralizada.</li>
+                                    <li>Capacidad limitada de producción que requiere inversión en nuevas instalaciones.
+                                    </li>
+                                </ul>
+                                <div class="border-t-2 border-yellow-200 pt-8">
+                                    <h5 class="font-bold text-yellow-800 text-2xl mb-4 flex items-center">
+                                        <i data-lucide="arrow-up" class="w-6 h-6 mr-3"></i>
+                                        Implicaciones Estratégicas (ST):
+                                    </h5>
+                                    <p class="text-gray-600 text-lg leading-relaxed">Diferenciar nuestros productos
+                                        mediante certificaciones de calidad y sostenibilidad adicionales (como Fair
+                                        Trade y Carbon Neutral) para competir eficazmente y fidelizar clientes,
+                                        invirtiendo en marketing digital estratégico y relaciones públicas
+                                        internacionales.</p>
+                                </div>
+                            </div>
+                            <div
+                                class="bg-gradient-to-br from-red-50 to-pink-50 border border-red-200 rounded-3xl p-10 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4">
+                                <div class="flex items-center mb-8">
+                                    <i data-lucide="alert-octagon" class="w-14 h-14 text-red-600 mr-5"></i>
+                                    <h4 class="text-3xl font-bold text-red-700">Amenazas Externas</h4>
+                                </div>
+                                <ul class="list-disc list-inside space-y-5 mb-8 text-gray-700 text-xl">
+                                    <li>Fuerte competencia de empresas internacionales con mayor capacidad económica y
+                                        distribución global.</li>
+                                    <li>Volatilidad extrema en los precios de materias primas y insumos debido a
+                                        factores geopolíticos.</li>
+                                    <li>Cambios regulatorios ambientales estrictos y constantes que requieren adaptación
+                                        continua.</li>
+                                    <li>Persistencia de prácticas agrícolas convencionales con subsidios gubernamentales
+                                        significativos.</li>
+                                    <li>Riesgos climáticos crecientes que afectan la disponibilidad de materias primas
+                                        naturales.</li>
+                                </ul>
+                                <div class="border-t-2 border-red-200 pt-8">
+                                    <h5 class="font-bold text-red-800 text-2xl mb-4 flex items-center">
+                                        <i data-lucide="shield" class="w-6 h-6 mr-3"></i>
+                                        Implicaciones Estratégicas (WT):
+                                    </h5>
+                                    <p class="text-gray-600 text-lg leading-relaxed">Estandarizar procesos completamente
+                                        para mejorar la eficiencia y reducir costos operativos en un 15%. Desarrollar
+                                        una estrategia de marketing digital robusta para construir la marca y comunicar
+                                        nuestro valor diferencial de sostenibilidad mediante storytelling auténtico y
+                                        datos verificables.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Pestaña 3: Objetivos -->
+                    <section id="objetivos" class="tab-content">
+                        <div class="text-center mb-16">
+                            <h2 class="text-5xl font-bold text-emerald-800 mb-6">Objetivos Estratégicos y KPIs</h2>
+                            <p class="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">Medimos nuestro éxito a
+                                través de objetivos claros y KPIs departamentales que impulsan el rendimiento y nos
+                                mantienen enfocados en nuestra visión ambiciosa.</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-20">
+                            <div class="metric-card">
+                                <h3 class="text-2xl font-semibold text-emerald-700 mb-8 flex items-center">
+                                    <i data-lucide="globe" class="w-8 h-8 mr-3"></i>
+                                    Crecimiento de Mercado
+                                </h3>
+                                <div class="chart-container" style="height:220px">
+                                    <canvas id="marketShareChart"></canvas>
+                                </div>
+                                <div class="mt-8 p-6 bg-emerald-50 rounded-2xl border border-emerald-200">
+                                    <p class="text-sm text-emerald-800 font-semibold mb-2">Meta estratégica:</p>
+                                    <p class="text-xl text-emerald-900 font-bold">Alcanzar 25% de participación de
+                                        mercado nacional en 2 años</p>
+                                    <p class="text-sm text-emerald-700 mt-2">Actual: 10%</p>
+                                </div>
+                            </div>
+                            <div class="metric-card">
+                                <h3 class="text-2xl font-semibold text-emerald-700 mb-8 flex items-center">
+                                    <i data-lucide="leaf" class="w-8 h-8 mr-3"></i>
+                                    Liderazgo Sostenible
+                                </h3>
+                                <div class="chart-container" style="height:220px">
+                                    <canvas id="sustainabilityChart"></canvas>
+                                </div>
+                                <div class="mt-8 p-6 bg-emerald-50 rounded-2xl border border-emerald-200">
+                                    <p class="text-sm text-emerald-800 font-semibold mb-2">Meta estratégica:</p>
+                                    <p class="text-xl text-emerald-900 font-bold">Reducir agroquímicos en un 50% en 3
+                                        años</p>
+                                    <p class="text-sm text-emerald-700 mt-2">Actual: 20%</p>
+                                </div>
+                            </div>
+                            <div class="metric-card">
+                                <h3 class="text-2xl font-semibold text-emerald-700 mb-8 flex items-center">
+                                    <i data-lucide="flask-conical" class="w-8 h-8 mr-3"></i>
+                                    Innovación Constante
+                                </h3>
+                                <div class="chart-container" style="height:220px">
+                                    <canvas id="innovationChart"></canvas>
+                                </div>
+                                <div class="mt-8 p-6 bg-emerald-50 rounded-2xl border border-emerald-200">
+                                    <p class="text-sm text-emerald-800 font-semibold mb-2">Meta estratégica:</p>
+                                    <p class="text-xl text-emerald-900 font-bold">Lanzar 3 nuevos productos innovadores
+                                        en 18 meses</p>
+                                    <p class="text-sm text-emerald-700 mt-2">En desarrollo: 2</p>
+                                </div>
+                            </div>
+                            <div class="metric-card">
+                                <h3 class="text-2xl font-semibold text-emerald-700 mb-8 flex items-center">
+                                    <i data-lucide="map-pin" class="w-8 h-8 mr-3"></i>
+                                    Expansión Global
+                                </h3>
+                                <div class="chart-container" style="height:220px">
+                                    <canvas id="expansionChart"></canvas>
+                                </div>
+                                <div class="mt-8 p-6 bg-emerald-50 rounded-2xl border border-emerald-200">
+                                    <p class="text-sm text-emerald-800 font-semibold mb-2">Meta estratégica:</p>
+                                    <p class="text-xl text-emerald-900 font-bold">Entrar a 1 mercado internacional en 2
+                                        años</p>
+                                    <p class="text-sm text-emerald-700 mt-2">Países en evaluación: 3</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 class="text-4xl font-bold text-emerald-800 text-center mb-12">Matriz de KPIs por
+                            Departamento</h3>
+                        <div class="overflow-x-auto bg-white rounded-3xl shadow-2xl border border-gray-200">
+                            <table class="w-full text-sm text-left text-gray-600 system-table">
+                                <thead class="text-xs uppercase">
+                                    <tr>
+                                        <th scope="col" class="px-8 py-6">Departamento</th>
+                                        <th scope="col" class="px-8 py-6">KPI principal</th>
+                                        <th scope="col" class="px-8 py-6">KPI Secundario</th>
+                                        <th scope="col" class="px-8 py-6">Meta (trimestral)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="px-8 py-6 font-medium">Venta en Mostrador</td>
+                                        <td class="px-8 py-6">Volumen de Ventas ($)</td>
+                                        <td class="px-8 py-6">Tasa de Conversión (%)</td>
+                                        <td class="px-8 py-6">> $1,500,000 MXN / > 5%</td>
+                                    </tr>
+                                    <tr class="border-b bg-slate-50 hover:bg-slate-100">
+                                        <td class="px-8 py-6 font-medium">Cotización y Compras</td>
+                                        <td class="px-8 py-6">Ahorro en Compras (%)</td>
+                                        <td class="px-8 py-6">Tiempo de Ciclo de Compra</td>
+                                        <td class="px-8 py-6">> 3% vs presupuesto / < 5 días</td>
+                                    </tr>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="px-8 py-6 font-medium">Logística</td>
+                                        <td class="px-8 py-6">Entregas a Tiempo (%)</td>
+                                        <td class="px-8 py-6">Costo por Envío ($)</td>
+                                        <td class="px-8 py-6">> 98% / Reducción del 2%</td>
+                                    </tr>
+                                    <tr class="border-b bg-slate-50 hover:bg-slate-100">
+                                        <td class="px-8 py-6 font-medium">Administración</td>
+                                        <td class="px-8 py-6">Margen de Utilidad Neta (%)</td>
+                                        <td class="px-8 py-6">Días de Cuentas por Cobrar</td>
+                                        <td class="px-8 py-6">> 15% / < 30 días</td>
+                                    </tr>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="px-8 py-6 font-medium">Dirección (CEO)</td>
+                                        <td class="px-8 py-6">Crecimiento de Ingresos (%)</td>
+                                        <td class="px-8 py-6">Retorno sobre la Inversión (ROI)</td>
+                                        <td class="px-8 py-6">> 8% / > 20%</td>
+                                    </tr>
+                                    <tr class="border-b bg-slate-50 hover:bg-slate-100">
+                                        <td class="px-8 py-6 font-medium">Marketing Digital</td>
+                                        <td class="px-8 py-6">Crecimiento Seguidores (%)</td>
+                                        <td class="px-8 py-6">ROI Campañas (%)</td>
+                                        <td class="px-8 py-6">> 10% / > 150%</td>
+                                    </tr>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="px-8 py-6 font-medium">I+D</td>
+                                        <td class="px-8 py-6">Productos Nuevos/Año</td>
+                                        <td class="px-8 py-6">Tiempo Desarrollo (días)</td>
+                                        <td class="px-8 py-6">> 2 / < 120</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- Pestaña 4: Estructura -->
+                    <section id="estructura" class="tab-content">
+                        <div class="text-center mb-16">
+                            <h2 class="text-5xl font-bold text-emerald-800 mb-6">Estructura Organizacional Funcional
+                            </h2>
+                            <p class="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">Nuestra organización
+                                está diseñada para la eficiencia y la colaboración. Haga clic en un rol para explorar
+                                sus funciones, KPI e interacciones clave que crean valor para nuestros clientes.</p>
+                        </div>
+                        <div id="organigrama-contenedor" class="text-center overflow-x-auto p-8 flex justify-center">
+                            <!-- Estructura del organigrama mejorado -->
+                            <div class="organigrama-container-new">
+                                <div class="organigrama-level ceo-level">
+                                    <div class="organigrama-node-wrapper">
+                                        <div class="organigram-node">
+                                            <div class="font-bold text-lg text-emerald-800">CEO</div>
+                                            <div class="organigram-details hidden">
+                                                <strong
+                                                    class="font-semibold text-slate-800 block mb-1">Responsabilidades:</strong>
+                                                <p class="text-xs mb-2">Dirección estratégica, relaciones con
+                                                    inversionistas, cultura organizacional, definición de visión y
+                                                    misión.</p>
+                                                <div class="mb-3"><strong
+                                                        class="font-semibold text-slate-800 block mb-1">KPI
+                                                        Clave:</strong><span class="kpi-badge">Crecimiento Ingresos
+                                                        (%)</span><span class="kpi-badge">ROI (%)</span><span
+                                                        class="kpi-badge">Satisfacción Empleados (%)</span></div>
+                                                <div><strong class="font-semibold text-slate-800 block mb-1">Colabora
+                                                        con:</strong><span class="collaboration-badge">Todos los
+                                                        departamentos</span><span class="collaboration-badge">Consejo
+                                                        Directivo</span><span
+                                                        class="collaboration-badge">Inversionistas</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="organigrama-level">
+                                    <div class="organigrama-children-line"></div>
+                                    <div class="organigrama-node-wrapper">
+                                        <div class="organigrama-node-connector"></div>
+                                        <div class="organigram-node">
+                                            <div class="font-bold text-lg text-emerald-800">Director Administrativo
+                                            </div>
+                                            <div class="organigram-details hidden">
+                                                <strong
+                                                    class="font-semibold text-slate-800 block mb-1">Responsabilidades:</strong>
+                                                <p class="text-xs mb-2">Gestión de operaciones, finanzas, RRHH,
+                                                    supervisión general, cumplimiento legal y administrativo.</p>
+                                                <div class="mb-3"><strong
+                                                        class="font-semibold text-slate-800 block mb-1">KPI
+                                                        Clave:</strong><span class="kpi-badge">Margen Utilidad Neta
+                                                        (%)</span><span class="kpi-badge">Eficiencia Operativa
+                                                        (%)</span><span class="kpi-badge">Rotación Personal (%)</span>
+                                                </div>
+                                                <div><strong class="font-semibold text-slate-800 block mb-1">Colabora
+                                                        con:</strong><span class="collaboration-badge">CEO</span><span
+                                                        class="collaboration-badge">Todos los departamentos</span><span
+                                                        class="collaboration-badge">Contadores Externos</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="organigrama-node-wrapper">
+                                        <div class="organigrama-node-connector"></div>
+                                        <div class="organigram-node">
+                                            <div class="font-bold text-lg text-emerald-800">Director de Desarrollo</div>
+                                            <div class="organigram-details hidden">
+                                                <strong
+                                                    class="font-semibold text-slate-800 block mb-1">Responsabilidades:</strong>
+                                                <p class="text-xs mb-2">Investigación y desarrollo, innovación
+                                                    tecnológica, gestión de proyectos, propiedad intelectual.</p>
+                                                <div class="mb-3"><strong
+                                                        class="font-semibold text-slate-800 block mb-1">KPI
+                                                        Clave:</strong><span class="kpi-badge">Productos
+                                                        Nuevos/Año</span><span class="kpi-badge">Tiempo Desarrollo
+                                                        (días)</span><span class="kpi-badge">Patentes Registradas</span>
+                                                </div>
+                                                <div><strong class="font-semibold text-slate-800 block mb-1">Colabora
+                                                        con:</strong><span class="collaboration-badge">CEO</span><span
+                                                        class="collaboration-badge">Compras</span><span
+                                                        class="collaboration-badge">Ventas</span><span
+                                                        class="collaboration-badge">Universidades</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="w-full relative flex justify-center mt-8">
+                                    <div class="absolute top-0 w-2/3 h-2px bg-gray-400"></div>
+                                    <div class="organigrama-level">
+                                        <div class="organigrama-node-wrapper">
+                                            <div class="organigrama-node-connector"></div>
+                                            <div class="organigram-node">
+                                                <div class="font-bold text-lg text-emerald-800">Gerente de Ventas</div>
+                                                <div class="organigram-details hidden">
+                                                    <strong
+                                                        class="font-semibold text-slate-800 block mb-1">Responsabilidades:</strong>
+                                                    <p class="text-xs mb-2">Atención al cliente, ventas directas,
+                                                        gestión de caja, desarrollo de estrategia comercial.</p>
+                                                    <div class="mb-3"><strong
+                                                            class="font-semibold text-slate-800 block mb-1">KPI
+                                                            Clave:</strong><span class="kpi-badge">Volumen Ventas
+                                                            ($)</span><span class="kpi-badge">Tasa Conversión
+                                                            (%)</span><span class="kpi-badge">Clientes Nuevos/Mes</span>
+                                                    </div>
+                                                    <div><strong
+                                                            class="font-semibold text-slate-800 block mb-1">Colabora
+                                                            con:</strong><span
+                                                            class="collaboration-badge">Logística</span><span
+                                                            class="collaboration-badge">Cotización</span><span
+                                                            class="collaboration-badge">Marketing</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="organigrama-node-wrapper">
+                                            <div class="organigrama-node-connector"></div>
+                                            <div class="organigram-node">
+                                                <div class="font-bold text-lg text-emerald-800">Gerente de Compras</div>
+                                                <div class="organigram-details hidden">
+                                                    <strong
+                                                        class="font-semibold text-slate-800 block mb-1">Responsabilidades:</strong>
+                                                    <p class="text-xs mb-2">Cotizaciones, negociación con proveedores,
+                                                        gestión de compras, control de inventario.</p>
+                                                    <div class="mb-3"><strong
+                                                            class="font-semibold text-slate-800 block mb-1">KPI
+                                                            Clave:</strong><span class="kpi-badge">Ahorro en Compras
+                                                            (%)</span><span class="kpi-badge">Tiempo Ciclo de
+                                                            Compra</span><span class="kpi-badge">Calidad
+                                                            Proveedores</span></div>
+                                                    <div><strong
+                                                            class="font-semibold text-slate-800 block mb-1">Colabora
+                                                            con:</strong><span
+                                                            class="collaboration-badge">Ventas</span><span
+                                                            class="collaboration-badge">Logística</span><span
+                                                            class="collaboration-badge">Administración</span><span
+                                                            class="collaboration-badge">Control de Calidad</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="organigrama-node-wrapper">
+                                            <div class="organigrama-node-connector"></div>
+                                            <div class="organigram-node">
+                                                <div class="font-bold text-lg text-emerald-800">Gerente de Logística
+                                                </div>
+                                                <div class="organigram-details hidden">
+                                                    <strong
+                                                        class="font-semibold text-slate-800 block mb-1">Responsabilidades:</strong>
+                                                    <p class="text-xs mb-2">Gestión de inventario, planificación de
+                                                        entregas, despachos, mantenimiento de flota.</p>
+                                                    <div class="mb-3"><strong
+                                                            class="font-semibold text-slate-800 block mb-1">KPI
+                                                            Clave:</strong><span class="kpi-badge">Entregas a Tiempo
+                                                            (%)</span><span class="kpi-badge">Costo por Envío
+                                                            ($)</span><span class="kpi-badge">Daños en Transporte
+                                                            (%)</span></div>
+                                                    <div><strong
+                                                            class="font-semibold text-slate-800 block mb-1">Colabora
+                                                            con:</strong><span
+                                                            class="collaboration-badge">Ventas</span><span
+                                                            class="collaboration-badge">Compras</span><span
+                                                            class="collaboration-badge">Administración</span><span
+                                                            class="collaboration-badge">Clientes</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="organigrama-node-wrapper">
+                                            <div class="organigrama-node-connector"></div>
+                                            <div class="organigram-node">
+                                                <div class="font-bold text-lg text-emerald-800">Gerente de Marketing
+                                                </div>
+                                                <div class="organigram-details hidden">
+                                                    <strong
+                                                        class="font-semibold text-slate-800 block mb-1">Responsabilidades:</strong>
+                                                    <p class="text-xs mb-2">Estrategia de marca, campañas digitales,
+                                                        relaciones públicas, análisis de mercado.</p>
+                                                    <div class="mb-3"><strong
+                                                            class="font-semibold text-slate-800 block mb-1">KPI
+                                                            Clave:</strong><span class="kpi-badge">Crecimiento
+                                                            Seguidores (%)</span><span class="kpi-badge">ROI Campañas
+                                                            (%)</span><span class="kpi-badge">Presencia Digital</span>
+                                                    </div>
+                                                    <div><strong
+                                                            class="font-semibold text-slate-800 block mb-1">Colabora
+                                                            con:</strong><span
+                                                            class="collaboration-badge">Ventas</span><span
+                                                            class="collaboration-badge">CEO</span><span
+                                                            class="collaboration-badge">Desarrollo Producto</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="organigrama-node-wrapper">
+                                            <div class="organigrama-node-connector"></div>
+                                            <div class="organigram-node">
+                                                <div class="font-bold text-lg text-emerald-800">Jefe de I+D</div>
+                                                <div class="organigram-details hidden">
+                                                    <strong
+                                                        class="font-semibold text-slate-800 block mb-1">Responsabilidades:</strong>
+                                                    <p class="text-xs mb-2">Diseño de experimentos, pruebas de producto,
+                                                        análisis de datos, documentación técnica.</p>
+                                                    <div class="mb-3"><strong
+                                                            class="font-semibold text-slate-800 block mb-1">KPI
+                                                            Clave:</strong><span class="kpi-badge">Experimentos
+                                                            Completados</span><span class="kpi-badge">Resultados
+                                                            Positivos (%)</span><span
+                                                            class="kpi-badge">Publicaciones</span></div>
+                                                    <div><strong
+                                                            class="font-semibold text-slate-800 block mb-1">Colabora
+                                                            con:</strong><span
+                                                            class="collaboration-badge">Laboratorios</span><span
+                                                            class="collaboration-badge">Universidades</span><span
+                                                            class="collaboration-badge">Reguladores</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="organigrama-node-wrapper">
+                                            <div class="organigrama-node-connector"></div>
+                                            <div class="organigram-node">
+                                                <div class="font-bold text-lg text-emerald-800">Especialista en
+                                                    Sostenibilidad</div>
+                                                <div class="organigram-details hidden">
+                                                    <strong
+                                                        class="font-semibold text-slate-800 block mb-1">Responsabilidades:</strong>
+                                                    <p class="text-xs mb-2">Certificaciones ambientales, huella de
+                                                        carbono, prácticas agrícolas regenerativas.</p>
+                                                    <div class="mb-3"><strong
+                                                            class="font-semibold text-slate-800 block mb-1">KPI
+                                                            Clave:</strong><span class="kpi-badge">Reducción Emisiones
+                                                            (%)</span><span class="kpi-badge">Certificaciones
+                                                            Obtenidas</span><span class="kpi-badge">Impacto
+                                                            Social</span></div>
+                                                    <div><strong
+                                                            class="font-semibold text-slate-800 block mb-1">Colabora
+                                                            con:</strong><span class="collaboration-badge">Todos los
+                                                            departamentos</span><span
+                                                            class="collaboration-badge">ONGs</span><span
+                                                            class="collaboration-badge">Gobierno</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Pestaña 5: Procesos -->
+                    <section id="procesos" class="tab-content">
+                        <div class="text-center mb-16">
+                            <h2 class="text-5xl font-bold text-emerald-800 mb-6">Flujos de Procesos Clave (SOP)</h2>
+                            <p class="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">Estos son nuestros
+                                procedimientos operativos estandarizados. Definen cómo creamos valor de manera
+                                consistente y eficiente, sentando las bases para la automatización y excelencia
+                                operativa.</p>
+                        </div>
+
+                        <div class="space-y-24">
+                            <div class="process-card">
+                                <div class="flex items-center justify-center mb-10">
+                                    <i data-lucide="shopping-cart" class="w-14 h-14 text-emerald-600 mr-5"></i>
+                                    <h3 class="text-4xl font-bold text-emerald-700">1. Proceso de venta y despacho
+                                        (Lead-to-Cash)</h3>
+                                </div>
+                                <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-0">
+                                    <div class="flowchart-step">
+                                        <strong>Ventas</strong><br />
+                                        Contacto Inicial y Cotización<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Duración: 1-2 días</span>
+                                    </div>
+                                    <div class="flowchart-arrow"></div>
+                                    <div class="flowchart-step">
+                                        <strong>Administración</strong><br />
+                                        Confirmación de Pago y Facturación<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Duración: 24 horas</span>
+                                    </div>
+                                    <div class="flowchart-arrow"></div>
+                                    <div class="flowchart-step">
+                                        <strong>Logística</strong><br />
+                                        Preparación de Pedido (Picking)<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Duración: 4-8 horas</span>
+                                    </div>
+                                    <div class="flowchart-arrow"></div>
+                                    <div class="flowchart-step">
+                                        <strong>Logística</strong><br />
+                                        Despacho y Seguimiento<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Duración: 24-48 horas</span>
+                                    </div>
+                                    <div class="flowchart-arrow"></div>
+                                    <div class="flowchart-step">
+                                        <strong>Ventas</strong><br />
+                                        Confirmación de entrega y post-venta<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Duración: 24 horas</span>
+                                    </div>
+                                </div>
+                                <div class="mt-10 process-highlight">
+                                    <h4 class="font-bold text-emerald-800 text-xl mb-3 flex items-center">
+                                        <i data-lucide="award" class="w-6 h-6 mr-3"></i>
+                                        Mejora Reciente:
+                                    </h4>
+                                    <p class="text-gray-700 text-lg">Implementamos un sistema de seguimiento GPS en
+                                        tiempo real para todos nuestros envíos, lo que ha reducido las entregas tardías
+                                        en un 35% y mejorado la satisfacción del cliente en un 28%.</p>
+                                </div>
+                            </div>
+
+                            <div class="process-card">
+                                <div class="flex items-center justify-center mb-10">
+                                    <i data-lucide="package" class="w-14 h-14 text-emerald-600 mr-5"></i>
+                                    <h3 class="text-4xl font-bold text-emerald-700">2. Proceso de Compra y
+                                        Abastecimiento</h3>
+                                </div>
+                                <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-0">
+                                    <div class="flowchart-step">
+                                        <strong>Compras</strong><br />
+                                        Detección de Necesidad y Solicitud<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Duración: 24 horas</span>
+                                    </div>
+                                    <div class="flowchart-arrow"></div>
+                                    <div class="flowchart-step">
+                                        <strong>Compras</strong><br />
+                                        Negociación y Orden de Compra<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Duración: 3-5 días</span>
+                                    </div>
+                                    <div class="flowchart-arrow"></div>
+                                    <div class="flowchart-step">
+                                        <strong>Logística</strong><br />
+                                        Recepción y Verificación de Mercancía<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Duración: 4-8 horas</span>
+                                    </div>
+                                    <div class="flowchart-arrow"></div>
+                                    <div class="flowchart-step">
+                                        <strong>Administración</strong><br />
+                                        Registro de Factura y Programación de Pago<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Duración: 24 horas</span>
+                                    </div>
+                                </div>
+                                <div class="mt-10 process-highlight">
+                                    <h4 class="font-bold text-emerald-800 text-xl mb-3 flex items-center">
+                                        <i data-lucide="award" class="w-6 h-6 mr-3"></i>
+                                        Mejora Reciente:
+                                    </h4>
+                                    <p class="text-gray-700 text-lg">Desarrollamos un sistema de evaluación de
+                                        proveedores con 15 criterios de sostenibilidad, lo que ha mejorado la calidad de
+                                        nuestros insumos en un 42% y reducido costos en un 7% anual.</p>
+                                </div>
+                            </div>
+
+                            <div class="process-card">
+                                <div class="flex items-center justify-center mb-10">
+                                    <i data-lucide="flask-conical" class="w-14 h-14 text-emerald-600 mr-5"></i>
+                                    <h3 class="text-4xl font-bold text-emerald-700">3. Proceso de Desarrollo de Nuevo
+                                        Producto (Idea-to-Launch)</h3>
+                                </div>
+                                <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-0">
+                                    <div class="flowchart-step">
+                                        <strong>CEO/Ventas</strong><br />
+                                        Investigación de Mercado e Ideación<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Duración: 2-4 semanas</span>
+                                    </div>
+                                    <div class="flowchart-arrow"></div>
+                                    <div class="flowchart-step">
+                                        <strong>Compras/CEO</strong><br />
+                                        Viabilidad Técnica y de Suministro<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Duración: 1-2 semanas</span>
+                                    </div>
+                                    <div class="flowchart-arrow"></div>
+                                    <div class="flowchart-step">
+                                        <strong>CEO/Admin</strong><br />
+                                        Desarrollo de Prototipo y Pruebas<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Duración: 4-8 semanas</span>
+                                    </div>
+                                    <div class="flowchart-arrow"></div>
+                                    <div class="flowchart-step">
+                                        <strong>Ventas/Logística</strong><br />
+                                        Lanzamiento al Mercado y Producción<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Duración: 2-4 semanas</span>
+                                    </div>
+                                </div>
+                                <div class="mt-10 process-highlight">
+                                    <h4 class="font-bold text-emerald-800 text-xl mb-3 flex items-center">
+                                        <i data-lucide="award" class="w-6 h-6 mr-3"></i>
+                                        Mejora Reciente:
+                                    </h4>
+                                    <p class="text-gray-700 text-lg">Implementamos pruebas con agricultores reales en
+                                        nuestras "granjas piloto" antes del lanzamiento comercial, lo que ha reducido
+                                        los errores de producto en un 68% y acelerado el tiempo de comercialización en
+                                        un 30%.</p>
+                                </div>
+                            </div>
+
+                            <div class="process-card">
+                                <div class="flex items-center justify-center mb-10">
+                                    <i data-lucide="check-circle-2" class="w-14 h-14 text-emerald-600 mr-5"></i>
+                                    <h3 class="text-4xl font-bold text-emerald-700">4. Proceso de Control de Calidad
+                                        (Farm-to-Fork)</h3>
+                                </div>
+                                <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-0">
+                                    <div class="flowchart-step">
+                                        <strong>Recepción</strong><br />
+                                        Inspección de Materia Prima<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Punto de control 1</span>
+                                    </div>
+                                    <div class="flowchart-arrow"></div>
+                                    <div class="flowchart-step">
+                                        <strong>Producción</strong><br />
+                                        Monitoreo de Proceso y Lote<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Punto de control 2</span>
+                                    </div>
+                                    <div class="flowchart-arrow"></div>
+                                    <div class="flowchart-step">
+                                        <strong>Almacén</strong><br />
+                                        Prueba de Producto Terminado<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Punto de control 3</span>
+                                    </div>
+                                    <div class="flowchart-arrow"></div>
+                                    <div class="flowchart-step">
+                                        <strong>Logística</strong><br />
+                                        Registro de Entrega Final<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Punto de control 4</span>
+                                    </div>
+                                </div>
+                                <div class="mt-10 process-highlight">
+                                    <h4 class="font-bold text-emerald-800 text-xl mb-3 flex items-center">
+                                        <i data-lucide="award" class="w-6 h-6 mr-3"></i>
+                                        Futura Innovación:
+                                    </h4>
+                                    <p class="text-gray-700 text-lg">Este proceso asegura la integridad y seguridad de
+                                        nuestros productos en cada etapa. Con la futura integración de blockchain, cada
+                                        punto de control creará un registro inmutable desde la granja hasta el tenedor,
+                                        garantizando total transparencia para el consumidor.</p>
+                                </div>
+                            </div>
+
+                            <div class="process-card">
+                                <div class="flex items-center justify-center mb-10">
+                                    <i data-lucide="wrench" class="w-14 h-14 text-emerald-600 mr-5"></i>
+                                    <h3 class="text-4xl font-bold text-emerald-700">5. Proceso de Mantenimiento y
+                                        Sostenibilidad</h3>
+                                </div>
+                                <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-0">
+                                    <div class="flowchart-step">
+                                        <strong>Logística</strong><br />
+                                        Inspección de Flota y Maquinaria<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Frecuencia: Semanal</span>
+                                    </div>
+                                    <div class="flowchart-arrow"></div>
+                                    <div class="flowchart-step">
+                                        <strong>Administración</strong><br />
+                                        Planificación de Mantenimiento Correctivo y Preventivo<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Duración: 24 horas</span>
+                                    </div>
+                                    <div class="flowchart-arrow"></div>
+                                    <div class="flowchart-step">
+                                        <strong>Sostenibilidad</strong><br />
+                                        Monitoreo de Huella de Carbono<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Frecuencia: Mensual</span>
+                                    </div>
+                                    <div class="flowchart-arrow"></div>
+                                    <div class="flowchart-step">
+                                        <strong>Logística/Sostenibilidad</strong><br />
+                                        Optimización de Consumo de Combustible<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Duración: Continuo</span>
+                                    </div>
+                                </div>
+                                <div class="mt-10 process-highlight">
+                                    <h4 class="font-bold text-emerald-800 text-xl mb-3 flex items-center">
+                                        <i data-lucide="award" class="w-6 h-6 mr-3"></i>
+                                        Mejora Reciente:
+                                    </h4>
+                                    <p class="text-gray-700 text-lg">La implementación de un sistema de telemetría en
+                                        nuestros vehículos ha permitido optimizar rutas, reduciendo el consumo de
+                                        combustible en un 15% y nuestra huella de carbono en un 8% en el último
+                                        trimestre.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Pestaña 6: Sistemas -->
+                    <section id="sistemas" class="tab-content">
+                        <div class="text-center mb-16">
+                            <h2 class="text-5xl font-bold text-emerald-800 mb-6">Sistemas, Tecnología y Calidad</h2>
+                            <p class="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">La infraestructura
+                                tecnológica y los marcos de calidad que soportan nuestra operación y garantizan nuestra
+                                competitividad global y sostenibilidad a largo plazo.</p>
+
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                            <div>
+                                <div class="flex items-center mb-10">
+                                    <i data-lucide="server" class="w-14 h-14 text-emerald-600 mr-5"></i>
+                                    <h3 class="text-4xl font-bold text-emerald-700">Pila Tecnológica Recomendada</h3>
+                                </div>
+                                <div class="overflow-x-auto bg-white rounded-3xl shadow-2xl border border-gray-200">
+                                    <table class="w-full text-sm text-left text-gray-600 system-table">
+                                        <thead class="text-xs uppercase">
+                                            <tr>
+                                                <th class="px-8 py-6">Área Funcional</th>
+                                                <th class="px-8 py-6">Tipo de software</th>
+                                                <th class="px-8 py-6">Ejemplo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-b hover:bg-gray-50">
+                                                <td class="px-8 py-6 font-medium">Ventas y marketing</td>
+                                                <td class="px-8 py-6">CRM</td>
+                                                <td class="px-8 py-6">HubSpot / Zoho CRM</td>
+                                            </tr>
+                                            <tr class="border-b hover:bg-gray-50">
+                                                <td class="px-8 py-6 font-medium">Operaciones y Finanzas</td>
+                                                <td class="px-8 py-6">ERP</td>
+                                                <td class="px-8 py-6">Odoo / SAP Business One</td>
+                                            </tr>
+                                            <tr class="border-b hover:bg-gray-50">
+                                                <td class="px-8 py-6 font-medium">Comunicación interna</td>
+                                                <td class="px-8 py-6">Plataforma colaborativa</td>
+                                                <td class="px-8 py-6">Microsoft Teams / Slack</td>
+                                            </tr>
+                                            <tr class="border-b hover:bg-gray-50">
+                                                <td class="px-8 py-6 font-medium">Gestión de Proyectos</td>
+                                                <td class="px-8 py-6">Software de Proyectos</td>
+                                                <td class="px-8 py-6">Asana / Trello</td>
+                                            </tr>
+                                            <tr class="border-b hover:bg-gray-50">
+                                                <td class="px-8 py-6 font-medium">Automatización de Procesos</td>
+                                                <td class="px-8 py-6">RPA</td>
+                                                <td class="px-8 py-6">UiPath / Automation Anywhere</td>
+                                            </tr>
+                                            <tr class="border-b hover:bg-gray-50">
+                                                <td class="px-8 py-6 font-medium">Análisis de Datos</td>
+                                                <td class="px-8 py-6">BI</td>
+                                                <td class="px-8 py-6">Power BI / Tableau</td>
+                                            </tr>
+                                            <tr class="border-b hover:bg-gray-50">
+                                                <td class="px-8 py-6 font-medium">Control de Calidad</td>
+                                                <td class="px-8 py-6">LIMS</td>
+                                                <td class="px-8 py-6">LabWare / STARLIMS</td>
+                                            </tr>
+                                            <tr class="border-b hover:bg-gray-50">
+                                                <td class="px-8 py-6 font-medium">Trazabilidad</td>
+                                                <td class="px-8 py-6">Blockchain</td>
+                                                <td class="px-8 py-6">Hyperledger / VeChain</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mt-10 p-8 bg-blue-50 rounded-3xl border border-blue-200">
+                                    <h4 class="font-bold text-blue-800 text-2xl mb-5 flex items-center">
+                                        <i data-lucide="award" class="w-7 h-7 mr-3"></i>
+                                        Beneficios de Digitalización:
+                                    </h4>
+                                    <ul class="text-gray-700 text-lg space-y-4">
+                                        <li class="flex items-start"><i data-lucide="check-circle"
+                                                class="w-6 h-6 text-green-600 mr-3 mt-1 flex-shrink-0"></i>
+                                            <strong>Aumento de eficiencia:</strong> Automatización de tareas repetitivas
+                                            liberando tiempo para actividades estratégicas y creativas</li>
+                                        <li class="flex items-start"><i data-lucide="check-circle"
+                                                class="w-6 h-6 text-green-600 mr-3 mt-1 flex-shrink-0"></i>
+                                            <strong>Mejora en toma de decisiones:</strong> Acceso a datos en tiempo real
+                                            para análisis predictivo y anticipación de tendencias</li>
+                                        <li class="flex items-start"><i data-lucide="check-circle"
+                                                class="w-6 h-6 text-green-600 mr-3 mt-1 flex-shrink-0"></i>
+                                            <strong>Reducción de errores:</strong> Eliminación de entradas manuales y
+                                            duplicaciones de datos con precisión del 99.9%</li>
+                                        <li class="flex items-start"><i data-lucide="check-circle"
+                                                class="w-6 h-6 text-green-600 mr-3 mt-1 flex-shrink-0"></i>
+                                            <strong>Escalabilidad:</strong> Infraestructura preparada para crecimiento
+                                            exponencial sin incremento proporcional de costos</li>
+                                        <li class="flex items-start"><i data-lucide="check-circle"
+                                                class="w-6 h-6 text-green-600 mr-3 mt-1 flex-shrink-0"></i>
+                                            <strong>Competitividad:</strong> Implementación de tecnologías emergentes
+                                            como IA y blockchain para diferenciación sostenible</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex items-center mb-10">
+                                    <i data-lucide="check-circle" class="w-14 h-14 text-emerald-600 mr-5"></i>
+                                    <h3 class="text-4xl font-bold text-emerald-700">Marco de Gestión de Calidad (ISO
+                                        9001)</h3>
+                                </div>
+                                <div id="calidad-acordeon" class="space-y-5">
+                                    <div class="quality-principle">
+                                        <button
+                                            class="w-full text-left p-6 font-semibold flex justify-between items-center hover:bg-slate-50 accordion-button"
+                                            aria-expanded="false">
+                                            <span class="flex items-center">
+                                                <span
+                                                    class="bg-emerald-100 text-emerald-800 w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold mr-4">1</span>
+                                                Enfoque al cliente
+                                            </span>
+                                            <svg class="w-6 h-6 transform transition-transform" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        </button>
+                                        <div class="px-6 pb-6 text-gray-600 text-base hidden">
+                                            <p class="mb-4">Entender y satisfacer las necesidades actuales y futuras de
+                                                los clientes es nuestra máxima prioridad. Implementamos encuestas de
+                                                satisfacción trimestrales, reuniones de retroalimentación con clientes
+                                                clave y un sistema de gestión de reclamaciones con resolución en menos
+                                                de 48 horas.</p>
+                                            <div class="bg-emerald-50 p-4 rounded-xl">
+                                                <p class="text-sm"><strong>Indicador clave:</strong> Índice de
+                                                    Satisfacción del Cliente (CSI) ≥ 90%</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="quality-principle">
+                                        <button
+                                            class="w-full text-left p-6 font-semibold flex justify-between items-center hover:bg-slate-50 accordion-button"
+                                            aria-expanded="false">
+                                            <span class="flex items-center">
+                                                <span
+                                                    class="bg-emerald-100 text-emerald-800 w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold mr-4">2</span>
+                                                Liderazgo
+                                            </span>
+                                            <svg class="w-6 h-6 transform transition-transform" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        </button>
+                                        <div class="px-6 pb-6 text-gray-600 text-base hidden">
+                                            <p class="mb-4">La dirección establece la unidad de propósito y crea las
+                                                condiciones para que el personal se comprometa con los objetivos de
+                                                calidad. Realizamos revisiones estratégicas mensuales, comunicaciones
+                                                transparentes con todo el equipo y un programa de liderazgo
+                                                participativo con rotación en comités de calidad.</p>
+                                            <div class="bg-emerald-50 p-4 rounded-xl">
+                                                <p class="text-sm"><strong>Indicador clave:</strong> Participación en
+                                                    reuniones estratégicas ≥ 95%</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="quality-principle">
+                                        <button
+                                            class="w-full text-left p-6 font-semibold flex justify-between items-center hover:bg-slate-50 accordion-button"
+                                            aria-expanded="false">
+                                            <span class="flex items-center">
+                                                <span
+                                                    class="bg-emerald-100 text-emerald-800 w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold mr-4">3</span>
+                                                Enfoque basado en procesos
+                                            </span>
+                                            <svg class="w-6 h-6 transform transition-transform" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        </button>
+                                        <div class="px-6 pb-6 text-gray-600 text-base hidden">
+                                            <p class="mb-4">Gestionamos nuestras actividades como procesos
+                                                interrelacionados para lograr resultados consistentes y predecibles de
+                                                manera más eficiente. Documentamos todos nuestros SOPs en un repositorio
+                                                digital accesible, realizamos auditorías internas trimestrales y
+                                                mantenemos un sistema de mejora continua con seguimiento de acciones
+                                                correctivas.</p>
+                                            <div class="bg-emerald-50 p-4 rounded-xl">
+                                                <p class="text-sm"><strong>Indicador clave:</strong> Cumplimiento de
+                                                    SOPs ≥ 98%</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="quality-principle">
+                                        <button
+                                            class="w-full text-left p-6 font-semibold flex justify-between items-center hover:bg-slate-50 accordion-button"
+                                            aria-expanded="false">
+                                            <span class="flex items-center">
+                                                <span
+                                                    class="bg-emerald-100 text-emerald-800 w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold mr-4">4</span>
+                                                Mejora Continua
+                                            </span>
+                                            <svg class="w-6 h-6 transform transition-transform" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        </button>
+                                        <div class="px-6 pb-6 text-gray-600 text-base hidden">
+                                            <p class="mb-4">La mejora continua del desempeño general de la organización
+                                                es un objetivo permanente. Implementamos el ciclo PDCA
+                                                (Plan-Do-Check-Act) en todos nuestros procesos, fomentamos la cultura de
+                                                Kaizen con incentivos a propuestas de mejora, y realizamos benchmarking
+                                                anual con empresas líderes del sector.</p>
+                                            <div class="bg-emerald-50 p-4 rounded-xl">
+                                                <p class="text-sm"><strong>Indicador clave:</strong> Propuestas de
+                                                    mejora implementadas ≥ 20/año</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="quality-principle">
+                                        <button
+                                            class="w-full text-left p-6 font-semibold flex justify-between items-center hover:bg-slate-50 accordion-button"
+                                            aria-expanded="false">
+                                            <span class="flex items-center">
+                                                <span
+                                                    class="bg-emerald-100 text-emerald-800 w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold mr-4">5</span>
+                                                Enfoque basado en evidencia
+                                            </span>
+                                            <svg class="w-6 h-6 transform transition-transform" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        </button>
+                                        <div class="px-6 pb-6 text-gray-600 text-base hidden">
+                                            <p class="mb-4">Las decisiones se basan en el análisis de datos y la
+                                                información disponible. Utilizamos herramientas de BI para monitorear
+                                                KPIs en tiempo real, realizamos análisis estadísticos de variación en
+                                                procesos, y tomamos decisiones informadas respaldadas por evidencia
+                                                cuantitativa y cualitativa.</p>
+                                            <div class="bg-emerald-50 p-4 rounded-xl">
+                                                <p class="text-sm"><strong>Indicador clave:</strong> Decisiones basadas
+                                                    en datos ≥ 90%</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="quality-principle">
+                                        <button
+                                            class="w-full text-left p-6 font-semibold flex justify-between items-center hover:bg-slate-50 accordion-button"
+                                            aria-expanded="false">
+                                            <span class="flex items-center">
+                                                <span
+                                                    class="bg-emerald-100 text-emerald-800 w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold mr-4">6</span>
+                                                Relaciones mutuamente beneficiosas
+                                            </span>
+                                            <svg class="w-6 h-6 transform transition-transform" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        </button>
+                                        <div class="px-6 pb-6 text-gray-600 text-base hidden">
+                                            <p class="mb-4">Las relaciones con proveedores, socios y stakeholders se
+                                                gestionan para maximizar el valor. Evaluamos anualmente a nuestros
+                                                proveedores clave con un sistema de puntuación de 100 puntos,
+                                                desarrollamos programas de mejora conjunta, y mantenemos alianzas
+                                                estratégicas con instituciones de investigación.</p>
+                                            <div class="bg-emerald-50 p-4 rounded-xl">
+                                                <p class="text-sm"><strong>Indicador clave:</strong> Proveedores
+                                                    certificados ≥ 80%</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <footer class="bg-slate-800 text-white mt-24">
+            <div class="container mx-auto px-6 py-16">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
+                    <div>
+                        <p class="text-4xl font-bold"><span class="text-emerald-400">AGRO</span>NARE</p>
+                        <p class="text-lg text-slate-300 mt-6 leading-relaxed">Impulsando la agricultura del futuro con
+                            soluciones sostenibles e innovadoras que mejoran la rentabilidad de los agricultores y
+                            promueven la salud del suelo. Nuestra misión es transformar la agricultura mediante
+                            tecnología accesible y conocimiento científico.</p>
+                    </div>
+                    <div>
+                        <h4 class="text-2xl font-semibold mb-6">Enlaces Rápidos</h4>
+                        <ul class="space-y-4 text-slate-300 text-lg">
+                            <li><a href="#"
+                                    class="hover:text-emerald-400 transition-colors duration-300 flex items-center"
+                                    aria-label="Ir a Inicio"><i data-lucide="chevron-right"
+                                        class="w-5 h-5 mr-2 opacity-70"></i> Inicio</a></li>
+                            <li><a href="#"
+                                    class="hover:text-emerald-400 transition-colors duration-300 flex items-center"
+                                    aria-label="Ir a Sobre Nosotros"><i data-lucide="chevron-right"
+                                        class="w-5 h-5 mr-2 opacity-70"></i> Sobre Nosotros</a></li>
+                            <li><a href="#"
+                                    class="hover:text-emerald-400 transition-colors duration-300 flex items-center"
+                                    aria-label="Ir a Productos"><i data-lucide="chevron-right"
+                                        class="w-5 h-5 mr-2 opacity-70"></i> Productos</a></li>
+                            <li><a href="#"
+                                    class="hover:text-emerald-400 transition-colors duration-300 flex items-center"
+                                    aria-label="Ir a Tecnología"><i data-lucide="chevron-right"
+                                        class="w-5 h-5 mr-2 opacity-70"></i> Tecnología</a></li>
+                            <li><a href="#"
+                                    class="hover:text-emerald-400 transition-colors duration-300 flex items-center"
+                                    aria-label="Ir a Sostenibilidad"><i data-lucide="chevron-right"
+                                        class="w-5 h-5 mr-2 opacity-70"></i> Sostenibilidad</a></li>
+                            <li><a href="#"
+                                    class="hover:text-emerald-400 transition-colors duration-300 flex items-center"
+                                    aria-label="Ir a Contacto"><i data-lucide="chevron-right"
+                                        class="w-5 h-5 mr-2 opacity-70"></i> Contacto</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-2xl font-semibold mb-6">Contacto</h4>
+                        <div class="space-y-4 text-slate-300 text-lg">
+                            <p class="flex items-start"><i data-lucide="map-pin"
+                                    class="w-6 h-6 mr-3 mt-1 text-emerald-400"></i> <span>Av. Agricultura Sostenible
+                                    123, Ciudad Verde, Estado de México, CP 52000</span></p>
+                            <p class="flex items-center"><i data-lucide="phone"
+                                    class="w-6 h-6 mr-3 text-emerald-400"></i> +52 (55) 1234-5678</p>
+                            <p class="flex items-center"><i data-lucide="mail"
+                                    class="w-6 h-6 mr-3 text-emerald-400"></i> contacto@agronare.com</p>
+                            <p class="flex items-center"><i data-lucide="globe"
+                                    class="w-6 h-6 mr-3 text-emerald-400"></i> www.agronare.com</p>
+                            <p class="flex items-center"><i data-lucide="calendar"
+                                    class="w-6 h-6 mr-3 text-emerald-400"></i> Lunes-Viernes: 8:00-18:00</p>
+                        </div>
+                        <div class="flex space-x-4 mt-8">
+                            <a href="#"
+                                class="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors duration-300"
+                                aria-label="Visitar Facebook">
+                                <i data-lucide="facebook" class="w-6 h-6"></i>
+                            </a>
+                            <a href="#"
+                                class="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors duration-300"
+                                aria-label="Visitar Twitter">
+                                <i data-lucide="twitter" class="w-6 h-6"></i>
+                            </a>
+                            <a href="#"
+                                class="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors duration-300"
+                                aria-label="Visitar LinkedIn">
+                                <i data-lucide="linkedin" class="w-6 h-6"></i>
+                            </a>
+                            <a href="#"
+                                class="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors duration-300"
+                                aria-label="Visitar Instagram">
+                                <i data-lucide="instagram" class="w-6 h-6"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-t border-slate-700 mt-12 pt-10 text-center">
+                    <p class="text-lg text-slate-400">© 2025 Agronare. Todos los derechos reservados. Sistema de Gestión
+                        Empresarial v3.0</p>
+                    <p class="text-sm text-slate-500 mt-2">Certificado ISO 9001:2015 • Miembro de la Asociación Mexicana
+                        de Agricultura Sostenible • Premio Nacional de Innovación Agrícola 2023</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize Lucide icons
+            lucide.createIcons();
+
+            const welcomeScreen = document.getElementById('welcome-screen');
+            const enterButton = document.getElementById('enter-button');
+            const mainContent = document.getElementById('main-content');
+            const tabs = document.querySelectorAll('#main-tabs button');
+            const contents = document.querySelectorAll('.tab-content');
+            const organigramaContenedor = document.getElementById('organigrama-contenedor');
+            const acordeonCalidad = document.getElementById('calidad-acordeon');
+
+            const isInitialLoad = !sessionStorage.getItem('manualVisited');
+            if (isInitialLoad) {
+                welcomeScreen.classList.remove('hidden');
+            } else {
+                welcomeScreen.classList.add('hidden');
+                mainContent.classList.add('visible');
+                initCharts();
+            }
+
+            enterButton.addEventListener('click', () => {
+                welcomeScreen.classList.add('hidden');
+                sessionStorage.setItem('manualVisited', 'true');
+                setTimeout(() => {
+                    mainContent.classList.add('visible');
+                    initCharts();
+                }, 1000); // Wait for the fade-out transition to complete
+            });
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetId = tab.dataset.tab;
+
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    contents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === targetId) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            function initCharts() {
+                function createDonutChart(ctx, data, color) {
+                    new Chart(ctx, {
+                        type: 'doughnut',
+                        data: { datasets: [{ data, backgroundColor: [color, '#F1F5F9'], borderWidth: 0 }] },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '80%',
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    enabled: true,
+                                    backgroundColor: '#1e293b',
+                                    titleColor: '#ffffff',
+                                    bodyColor: '#ffffff',
+                                    borderColor: '#047857',
+                                    borderWidth: 2,
+                                    cornerRadius: 12,
+                                    displayColors: false,
+                                    padding: 12,
+                                    titleFont: { size: 14, weight: 'bold' },
+                                    bodyFont: { size: 13 }
+                                }
+                            },
+                            animation: {
+                                animateRotate: true,
+                                animateScale: true,
+                                duration: 2000,
+                                easing: 'easeOutQuart'
+                            }
+                        }
+                    });
+                }
+                if (document.getElementById('marketShareChart')) createDonutChart(document.getElementById('marketShareChart'), [25, 75], '#10B981');
+                if (document.getElementById('sustainabilityChart')) createDonutChart(document.getElementById('sustainabilityChart'), [35, 65], '#F59E0B');
+                if (document.getElementById('innovationChart')) createDonutChart(document.getElementById('innovationChart'), [50, 50], '#3B82F6');
+                if (document.getElementById('expansionChart')) createDonutChart(document.getElementById('expansionChart'), [15, 85], '#8B5CF6');
+            }
+
+            const organigramaData = {
+                nombre: 'Carlos Mendoza',
+                titulo: 'CEO & Fundador',
+                responsabilidades: 'Dirección estratégica, relaciones con inversionistas, cultura organizacional, definición de visión y misión, representación corporativa.',
+                kpis: ['Crecimiento Ingresos (%)', 'ROI (%)', 'Satisfacción Empleados (%)', 'Valor de Marca'],
+                colaboraciones: ['Todos los departamentos', 'Consejo Directivo', 'Inversionistas', 'Socios Estratégicos'],
+                hijos: [
+                    {
+                        nombre: 'María González',
+                        titulo: 'Directora Administrativa',
+                        responsabilidades: 'Gestión de operaciones, finanzas, RRHH, supervisión general, cumplimiento legal y administrativo, relaciones con entidades gubernamentales.',
+                        kpis: ['Margen Utilidad Neta (%)', 'Eficiencia Operativa (%)', 'Rotación Personal (%)', 'Cumplimiento Normativo'],
+                        colaboraciones: ['CEO', 'Todos los departamentos', 'Contadores Externos', 'Auditores'],
+                        hijos: [
+                            {
+                                nombre: 'Jorge Ramírez',
+                                titulo: 'Gerente de Ventas',
+                                responsabilidades: 'Atención al cliente, ventas directas, gestión de caja, desarrollo de estrategia comercial, formación de equipos de venta.',
+                                kpis: ['Volumen Ventas ($)', 'Tasa Conversión (%)', 'Clientes Nuevos/Mes', 'Ticket Promedio'],
+                                colaboraciones: ['Logística', 'Cotización', 'Marketing', 'Clientes']
+                            },
+                            {
+                                nombre: 'Ana Martínez',
+                                titulo: 'Gerente de Compras',
+                                responsabilidades: 'Cotizaciones, negociación con proveedores, gestión de compras, control de inventario, desarrollo de proveedores.',
+                                kpis: ['Ahorro en Compras (%)', 'Tiempo Ciclo de Compra', 'Calidad Proveedores', 'Disponibilidad Insumos'],
+                                colaboraciones: ['Ventas', 'Logística', 'Administración', 'Control de Calidad']
+                            },
+                            {
+                                nombre: 'Luis Fernández',
+                                titulo: 'Gerente de Logística',
+                                responsabilidades: 'Gestión de inventario, planificación de entregas, despachos, mantenimiento de flota, optimización de rutas.',
+                                kpis: ['Entregas a Tiempo (%)', 'Costo por Envío ($)', 'Daños en Transporte (%)', 'Utilización Flota'],
+                                colaboraciones: ['Ventas', 'Compras', 'Administración', 'Clientes', 'Proveedores']
+                            },
+                            {
+                                nombre: 'Sofía Torres',
+                                titulo: 'Gerente de Marketing',
+                                responsabilidades: 'Estrategia de marca, campañas digitales, relaciones públicas, análisis de mercado, gestión de redes sociales.',
+                                kpis: ['Crecimiento Seguidores (%)', 'ROI Campañas (%)', 'Presencia Digital', 'Notoriedad de Marca'],
+                                colaboraciones: ['Ventas', 'CEO', 'Desarrollo Producto', 'Medios']
+                            },
+                            {
+                                nombre: 'Pedro Díaz',
+                                titulo: 'Gerente de Administración',
+                                responsabilidades: 'Contabilidad, finanzas, nóminas, impuestos, reporting financiero, control de presupuestos.',
+                                kpis: ['Margen Neto (%)', 'ROE (%)', 'Días de Cuentas por Cobrar', 'Eficiencia Financiera'],
+                                colaboraciones: ['CEO', 'Todos los departamentos', 'Auditores', 'Hacienda']
+                            }
+                        ]
+                    },
+                    {
+                        nombre: 'Dr. Elena Ruiz',
+                        titulo: 'Directora de Desarrollo',
+                        responsabilidades: 'Investigación y desarrollo, innovación tecnológica, gestión de proyectos, propiedad intelectual, colaboraciones científicas.',
+                        kpis: ['Productos Nuevos/Año', 'Tiempo Desarrollo (días)', 'Patentes Registradas', 'Publicaciones Científicas'],
+                        colaboraciones: ['CEO', 'Compras', 'Ventas', 'Universidades', 'Laboratorios', 'Reguladores'],
+                        hijos: [
+                            {
+                                nombre: 'Dr. Miguel Castro',
+                                titulo: 'Jefe de I+D',
+                                responsabilidades: 'Diseño de experimentos, pruebas de producto, análisis de datos, documentación técnica, validación científica.',
+                                kpis: ['Experimentos Completados', 'Resultados Positivos (%)', 'Publicaciones', 'Proyectos Innovadores'],
+                                colaboraciones: ['Laboratorios', 'Universidades', 'Reguladores', 'Campo']
+                            },
+                            {
+                                nombre: 'Laura Méndez',
+                                titulo: 'Especialista en Sostenibilidad',
+                                responsabilidades: 'Certificaciones ambientales, huella de carbono, prácticas agrícolas regenerativas, reportes de sostenibilidad.',
+                                kpis: ['Reducción Emisiones (%)', 'Certificaciones Obtenidas', 'Impacto Social', 'Eficiencia Recursos'],
+                                colaboraciones: ['Todos los departamentos', 'ONGs', 'Gobierno', 'Comunidades']
+                            },
+                            {
+                                nombre: 'Roberto Vargas',
+                                titulo: 'Coordinador de Calidad',
+                                responsabilidades: 'Control de calidad, sistemas de gestión, auditorías internas, cumplimiento normativo, gestión de no conformidades.',
+                                kpis: ['Reclamaciones Clientes', 'Auditorías Exitosas', 'Acciones Correctivas', 'Cumplimiento Normativo'],
+                                colaboraciones: ['Producción', 'Compras', 'Laboratorio', 'Clientes', 'Reguladores']
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            function buildOrganigrama(nodo, contenedor, isRoot = true) {
+                const nodoEl = document.createElement('div');
+                nodoEl.className = 'inline-flex flex-col items-center';
+
+                const card = document.createElement('div');
+                card.className = 'organigram-node';
+                card.innerHTML = `
+                <div class="font-bold text-lg text-emerald-800">${nodo.nombre}</div>
+                <div class="text-sm text-emerald-600 font-medium">${nodo.titulo}</div>
+            `;
+                nodoEl.appendChild(card);
+
+                const detailsEl = document.createElement('div');
+                detailsEl.className = 'organigram-details hidden mt-3 p-4 bg-slate-50 border rounded-lg text-sm text-left w-full transition-all duration-300';
+
+                // Create detailed content with badges
+                let kpiContent = '<div class="mb-4"><strong class="font-semibold text-slate-800 block mb-2">KPI Clave:</strong>';
+                nodo.kpis.forEach(kpi => {
+                    kpiContent += `<span class="kpi-badge">${kpi}</span>`;
+                });
+                kpiContent += '</div>';
+
+                let collaborationContent = '<div><strong class="font-semibold text-slate-800 block mb-2">Colabora con:</strong>';
+                nodo.colaboraciones.forEach(collab => {
+                    collaborationContent += `<span class="collaboration-badge">${collab}</span>`;
+                });
+                collaborationContent += '</div>';
+
+                detailsEl.innerHTML = `
+                <strong class="font-semibold text-slate-800 block mb-2">Responsabilidades:</strong>
+                <p class="text-sm mb-3">${nodo.responsabilidades}</p>
+                ${kpiContent}
+                ${collaborationContent}`;
+
+                nodoEl.appendChild(detailsEl);
+
+                card.addEventListener('click', () => {
+                    detailsEl.classList.toggle('hidden');
+                });
+
+                if (!isRoot) {
+                    nodoEl.style.position = 'relative';
+                    const line = document.createElement('div');
+                    line.style.cssText = 'position:absolute; left:50%; top:-20px; width:2px; height:20px; background-color:#94A3B8; transform:translateX(-50%);';
+                    nodoEl.prepend(line);
+                }
+
+                if (nodo.hijos && nodo.hijos.length > 0) {
+                    const childrenContainer = document.createElement('div');
+                    childrenContainer.className = 'flex flex-col md:flex-row justify-center gap-x-10 gap-y-14 mt-14 relative';
+                    nodo.hijos.forEach(child => { buildOrganigrama(child, childrenContainer, false); });
+                    nodoEl.appendChild(childrenContainer);
+                }
+                contenedor.appendChild(nodoEl);
+            }
+
+            if (organigramaContenedor) buildOrganigrama(organigramaData, organigramaContenedor);
+
+            // Quality principles accordion
+            if (acordeonCalidad) {
+                acordeonCalidad.addEventListener('click', (e) => {
+                    const button = e.target.closest('button');
+                    if (button) {
+                        const content = button.nextElementSibling;
+                        const icon = button.querySelector('svg');
+                        content.classList.toggle('hidden');
+                        icon.classList.toggle('rotate-180');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
