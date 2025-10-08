@@ -538,40 +538,6 @@
             box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.1);
         }
 
-        .timeline-step {
-            position: relative;
-            padding-left: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .timeline-step::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0.5rem;
-            width: 1rem;
-            height: 1rem;
-            border-radius: 9999px;
-            background: linear-gradient(135deg, #10b981, #047857);
-            border: 3px solid white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .timeline-step::after {
-            content: '';
-            position: absolute;
-            left: 0.5rem;
-            top: 2.5rem;
-            width: 2px;
-            height: calc(100% + 1rem);
-            background: linear-gradient(to bottom, #10b981, #e2e8f0);
-            z-index: -1;
-        }
-
-        .timeline-step:last-child::after {
-            display: none;
-        }
-
         .quality-principle {
             border-left: 4px solid #10b981;
             border-radius: 0.5rem;
@@ -584,6 +550,52 @@
         .quality-principle:hover {
             transform: translateX(8px);
             box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.2);
+        }
+
+        .accordion-valor-button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 1.25rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            text-align: left;
+            background-color: #f0fdf4;
+            color: #065f46;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            border: 1px solid #a7f3d0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .accordion-valor-button:hover {
+            background-color: #dcfce7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.07);
+        }
+
+        .accordion-valor-button .icon {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .accordion-valor-button.active .icon {
+            transform: rotate(135deg);
+        }
+
+        .accordion-valor-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out, opacity 0.5s ease-out;
+            opacity: 0;
+            background-color: #f8fafc;
+            border-radius: 0 0 0.75rem 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-top: none;
+        }
+
+        .accordion-valor-content-inner {
+            padding: 1.25rem;
         }
     </style>
 </head>
@@ -662,289 +674,486 @@
                     <!-- Pestaña 1: Historia -->
                     <section id="historia" class="tab-content active">
                         <div class="text-center mb-20">
-                            <h2 class="text-5xl font-bold text-emerald-800 mb-6">La Historia de Agronare</h2>
-                            <p class="text-2xl text-gray-600 max-w-5xl mx-auto leading-relaxed">Desde una idea en el
-                                campo hasta una empresa líder en tecnología agrícola. Nuestra historia es un compromiso
-                                con la innovación y la sostenibilidad.</p>
+                            <h2 class="text-5xl font-bold text-emerald-800 mb-6">Una historia escrita en el campo
+                                mexicano</h2>
+                            <p class="text-2xl text-gray-600 max-w-5xl mx-auto leading-relaxed">
+                                Desde una idea en el campo hasta una empresa líder en tecnología agrícola. Nuestra
+                                historia es un compromiso con la innovación y la sostenibilidad.
+                            </p>
                         </div>
 
-                        <div class="prose max-w-none text-gray-700 text-lg leading-relaxed space-y-12">
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                                <div class="space-y-8">
-                                    <div class="timeline-step">
-                                        <h3 class="text-2xl font-bold text-emerald-800 mb-3">Fundación (2023)</h3>
-                                        <p class="text-gray-600 leading-relaxed">Con una inversión
-                                            inicial, el ingeniero agrónomo Raúl González fundó Agronare, como una
-                                            empresa
-                                            familiar en Copándaro de galeana. Su visión era simple pero revolucionaria:
-                                            combinar
-                                            conocimiento tradicional con tecnología moderna para crear soluciones
-                                            agrícolas sostenibles.</p>
-                                    </div>
-                                    <div class="timeline-step">
-                                        <h3 class="text-2xl font-bold text-emerald-800 mb-3">Primer apertura de tienda
-                                            (2023)</h3>
-                                        <p class="text-gray-600 leading-relaxed">Lanzamos nuestro primer proyecto:
-                                            "Agronare", con un objetivo de crecimiento radicular que aumentara la
-                                            productividad brindando asesorias y atencion especializada. Y con ello La
-                                            aceptación fue inmediata entre pequeños
-                                            agricultores.</p>
-                                    </div>
-                                    <div class="timeline-step">
-                                        <h3 class="text-2xl font-bold text-emerald-800 mb-3">Expansión Regional
-                                            (Cuanajo, Michoacán. 2024)
-                                        </h3>
-                                        <p class="text-gray-600 leading-relaxed">Después de obtener certificación
-                                            orgánica, uno de los grandes objetivos es la expansion a mas lugares del
-                                            estado
-                                            mexicanos, Asi llevariamos Nuestro modelo de asesoramiento
-                                            técnico personalizado a mas lugares y rincones del estado Mexicano,
-                                            demostrando nuestro diferenciador
-                                            clave.</p>
-                                    </div>
-                                </div>
-                                <div class="relative">
-                                    <img src="agronare-interior.jpg" alt="Interior de la tienda de Agronare"
-                                        class="rounded-2xl shadow-2xl w-full mb-8">
-                                    <img src="agronare-fachada.jpg" alt="Fachada de Agronare"
-                                        class="rounded-2xl shadow-2xl w-full">
-                                </div>
-                            </div>
-
+                        <div class="relative max-w-7xl mx-auto">
+                            <!-- Línea de tiempo vertical -->
                             <div
-                                class="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-3xl p-12 border border-emerald-200">
-                                <div class="flex items-start">
-                                    <i data-lucide="lightbulb"
-                                        class="w-12 h-12 text-emerald-600 mr-6 mt-2 flex-shrink-0"></i>
-                                    <div>
-                                        <h3 class="text-3xl font-bold text-emerald-800 mb-4">Momento Decisivo</h3>
-                                        <p class="text-xl text-gray-700 leading-relaxed">En nuestros primeros meses,
-                                            mientras muchas empresas caen en operaciones, nosotros invertimos en I+D.
-                                            Desarrollamos un sistema de monitoreo remoto para cultivos que permitía a
-                                            los agricultores gestionar sus tierras de manera mas eficiente. Esta
-                                            innovación no solo
-                                            salva temporadas completas, sino que sentó las bases para nuestra gran
-                                            transformación.</p>
-                                    </div>
-                                </div>
+                                class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gray-200 hidden md:block">
                             </div>
 
-                            <div class="text-center">
-                                <h3 class="text-3xl font-bold text-emerald-800 mb-8">Nuestros Logros</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                    <div
-                                        class="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300">
-                                        <div class="text-5xl font-bold text-emerald-600 mb-2">100+</div>
-                                        <div class="text-xl font-semibold text-gray-800">Productos Innovadores</div>
-                                        <p class="text-gray-600 mt-2">Trabajamos con productos Desarrollados con enfoque
-                                            científico y validación
-                                            en campo</p>
+                            <!-- Contenedor de los eventos -->
+                            <div class="space-y-16">
+
+                                <!-- Evento 1: 2015 - Fundación -->
+                                <div class="relative md:flex items-center">
+                                    <div class="md:w-1/2 md:pr-8">
+                                        <div
+                                            class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 transform hover:scale-105 transition-transform duration-300">
+                                            <div class="flex items-center mb-4 text-emerald-600">
+                                                <i data-lucide="calendar" class="w-5 h-5 mr-2"></i>
+                                                <span class="text-lg font-semibold text-gray-900">2015</span>
+                                            </div>
+                                            <h4 class="text-2xl font-bold text-gray-900 mb-4">El proyecto de un agrónomo
+                                                visionario</h4>
+                                            <p class="text-gray-700 leading-relaxed mb-3">
+                                                Gracias al Ingeniero Arturo González, con más de 20 años de experiencia,
+                                                identificó la necesidad de insumos de calidad con asesoría técnica real.
+                                                Desde Zamora, Michoacán, fundó la "Comercializadora Nacional de Insumos
+                                                Agrícolas...".
+                                            </p>
+                                            <p class="text-gray-700 leading-relaxed">
+                                                Su misión: llevar soluciones honestas y efectivas al productor,
+                                                construyendo relaciones basadas en la confianza y el conocimiento.
+                                            </p>
+                                        </div>
                                     </div>
                                     <div
-                                        class="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300">
-                                        <div class="text-5xl font-bold text-emerald-600 mb-2">3</div>
-                                        <div class="text-xl font-semibold text-gray-800">Sucursales </div>
-                                        <p class="text-gray-600 mt-2">Red de distribución local, con presencia
-                                            estratégica de mercado</p>
+                                        class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center ring-8 ring-white z-10 hidden md:flex">
+                                        <i data-lucide="flag" class="w-4 h-4 text-white"></i>
+                                    </div>
+                                    <div class="md:w-1/2 md:pl-8 mt-8 md:mt-0">
+                                        <img src="comercializadora.png" alt="El proyecto de un agrónomo visionario"
+                                            class="rounded-2xl shadow-xl w-full transform hover:scale-105 transition-transform duration-300">
+                                    </div>
+                                </div>
+
+                                <!-- Evento 2: 2018 - Transformación -->
+                                <div class="relative md:flex items-center">
+                                    <div class="md:w-1/2 md:pr-8 mb-8 md:mb-0">
+                                        <img src="agbiomex.png" alt="La apuesta por la innovación responsable"
+                                            class="rounded-2xl shadow-xl w-full transform hover:scale-105 transition-transform duration-300">
                                     </div>
                                     <div
-                                        class="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300">
-                                        <div class="text-5xl font-bold text-emerald-600 mb-2">98%</div>
-                                        <div class="text-xl font-semibold text-gray-800">Satisfacción Clientes</div>
-                                        <p class="text-gray-600 mt-2">Índice promedio basado en encuestas trimestrales
-                                        </p>
+                                        class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center ring-8 ring-white z-10 hidden md:flex">
+                                        <i data-lucide="leaf" class="w-4 h-4 text-white"></i>
                                     </div>
+                                    <div class="md:w-1/2 md:pl-8">
+                                        <div
+                                            class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 transform hover:scale-105 transition-transform duration-300">
+                                            <div class="flex items-center mb-4 text-emerald-600">
+                                                <i data-lucide="calendar" class="w-5 h-5 mr-2"></i>
+                                                <span class="text-lg font-semibold text-gray-900">2018</span>
+                                            </div>
+                                            <h4 class="text-2xl font-bold text-gray-900 mb-4">La apuesta por la
+                                                innovación responsable</h4>
+                                            <p class="text-gray-700 leading-relaxed mb-3">
+                                                Anticipando la demanda por prácticas sostenibles, la empresa evolucionó
+                                                a AgBiomex, integrando insumos biológicos y orgánicos en la agricultura
+                                                convencional.
+                                            </p>
+                                            <p class="text-gray-700 leading-relaxed">
+                                                AgBiomex se convirtió en pionero regional, combinando eficacia
+                                                productiva con responsabilidad ambiental y estableciendo alianzas con
+                                                grandes productores agricolas.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Evento 3: 2023 - Fundación de Agronare -->
+                                <div class="relative md:flex items-center">
+                                    <div class="md:w-1/2 md:pr-8">
+                                        <div
+                                            class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 transform hover:scale-105 transition-transform duration-300">
+                                            <div class="flex items-center mb-4 text-emerald-600">
+                                                <i data-lucide="calendar" class="w-5 h-5 mr-2"></i>
+                                                <span class="text-lg font-semibold text-gray-900">2023</span>
+                                            </div>
+                                            <h4 class="text-2xl font-bold text-gray-900 mb-4">Nacimiento de Agronare:
+                                                Visión Revolucionaria</h4>
+                                            <p class="text-gray-700 leading-relaxed mb-4">
+                                                Con una inversión inicial El Ing. Raúl González fundó Agronare el
+                                                Ingeniero decide comenzar su proyecto
+                                                en el municipio de Copándaro de Galeana,
+                                                restructurando la empresa familiar. Su visión era simple
+                                                pero revolucionaria: combinar conocimiento tradicional con tecnología
+                                                moderna para crear soluciones agrícolas sostenibles.
+                                            </p>
+                                            <div class="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-lg">
+                                                <div class="flex items-start">
+                                                    <i data-lucide="lightbulb"
+                                                        class="w-5 h-5 text-yellow-600 mt-1 mr-3 flex-shrink-0"></i>
+                                                    <div>
+                                                        <strong class="text-yellow-800">Momento Decisivo:</strong> Se
+                                                        desarrolló un sistema de monitoreo ofreciendo asesorias para
+                                                        cultivos,
+                                                        sentando las bases para una transformación moderna y eficiente.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center ring-8 ring-white z-10 hidden md:flex">
+                                        <i data-lucide="rocket" class="w-4 h-4 text-white"></i>
+                                    </div>
+                                    <div class="md:w-1/2 md:pl-8 mt-8 md:mt-0">
+                                        <img src="agronare-interior.jpg" alt="Interior de la tienda de Agronare"
+                                            class="rounded-2xl shadow-xl w-full transform hover:scale-105 transition-transform duration-300">
+                                    </div>
+                                </div>
+
+                                <!-- Evento 4: 2024 - Expansión -->
+                                <div class="relative md:flex items-center">
+                                    <div class="md:w-1/2 md:pr-8 mb-8 md:mb-0">
+                                        <img src="agronare-fachada.jpg" alt="Fachada de Agronare"
+                                            class="rounded-2xl shadow-xl w-full transform hover:scale-105 transition-transform duration-300">
+                                    </div>
+                                    <div
+                                        class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center ring-8 ring-white z-10 hidden md:flex">
+                                        <i data-lucide="trending-up" class="w-4 h-4 text-white"></i>
+                                    </div>
+                                    <div class="md:w-1/2 md:pl-8">
+                                        <div
+                                            class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 transform hover:scale-105 transition-transform duration-300">
+                                            <div class="flex items-center mb-4 text-emerald-600">
+                                                <i data-lucide="calendar" class="w-5 h-5 mr-2"></i>
+                                                <span class="text-lg font-semibold text-gray-900">2024</span>
+                                            </div>
+                                            <h4 class="text-2xl font-bold text-gray-900 mb-4">Expansión Regional y
+                                                Consolidación</h4>
+                                            <p class="text-gray-700 leading-relaxed mb-4">
+                                                Uno de los grandes objetivos es la expansion a mas lugares del estado
+                                                mexicanos, Asi llevariamos Nuestro modelo de asesoramiento técnico
+                                                personalizado a mas lugares y rincones del estado Mexicano, demostrando
+                                                nuestro diferenciador clave.
+                                            </p>
+                                            <div class="mt-4 p-4 bg-blue-50 border-l-4 border-blue-400 rounded-lg">
+                                                <div class="flex items-start">
+                                                    <i data-lucide="award"
+                                                        class="w-5 h-5 text-blue-600 mt-1 mr-3 flex-shrink-0"></i>
+                                                    <div>
+                                                        <strong class="text-blue-800">Logro Clave:</strong> En nuestros
+                                                        primeros meses, en la parte mas dificil para muchas empresas
+                                                        caen en operaciones,
+                                                        nosotros invertimos y desarrollamos un sistema de
+                                                        monitoreo remoto para cultivos que permitía a los agricultores
+                                                        gestionar sus tierras de manera mas eficiente. Esta innovación
+                                                        no solo salva temporadas completas, sino que sentó las bases
+                                                        para nuestra gran transformación.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Legado -->
+                        <div class="mt-24 pt-16 border-t border-gray-200">
+                            <div class="text-center mb-16">
+                                <h3 class="text-4xl font-bold text-gray-900 mb-4">Un Legado que Continúa</h3>
+                                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                                    La historia de Agronare es la de dos generaciones de agrónomos que han dedicado sus
+                                    vidas a servir al campo mexicano con integridad, conocimiento y pasión.
+                                </p>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                                <div
+                                    class="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                                    <div class="flex items-center mb-4">
+                                        <i data-lucide="users" class="w-8 h-8 text-emerald-700 mr-3"></i>
+                                        <h4 class="text-2xl font-bold text-gray-900">Ingeniero Arturo González</h4>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">
+                                        <strong>Fundador visionario.</strong> Su enfoque práctico y ética inquebrantable
+                                        sentaron las bases de Agronare. Su legado vive en cada relación que construimos
+                                        con los productores.
+                                    </p>
+                                </div>
+                                <div
+                                    class="bg-gradient-to-br from-emerald-50 to-teal-50 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                                    <div class="flex items-center mb-4">
+                                        <i data-lucide="trending-up" class="w-8 h-8 text-teal-700 mr-3"></i>
+                                        <h4 class="text-2xl font-bold text-gray-900">Ingeniero Raúl González</h4>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">
+                                        <strong>Líder innovador.</strong> Con visión estratégica y enfoque tecnológico,
+                                        está llevando el legado familiar a nuevas dimensiones, posicionando a Agronare
+                                        como un referente nacional.
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </section>
+
 
                     <!-- Pestaña 2: Estrategia -->
                     <section id="estrategia" class="tab-content">
                         <div class="text-center mb-16">
                             <h2 class="text-5xl font-bold text-emerald-800 mb-6">Dirección Estratégica</h2>
-                            <p class="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">Esta seccion define el
-                                rumbo y la identidad de nuestra empresa, sentando las bases para todas las operaciónes y
-                                decisiones.
-
-                                Nuestra base para la
-                                toma de decisiones y el crecimiento sostenible, alineando la misión, visión y análisis
-                                del entorno para crear valor duradero en el sector agrícola.</p>
+                            <p class="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                                Nuestra base para la toma de decisiones y el crecimiento sostenible, alineando la
+                                misión, visión y valores para crear valor duradero en el sector agrícola.
+                            </p>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
                             <div
-                                class="bg-gradient-to-br from-emerald-50 to-teal-50 p-10 border border-emerald-200 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4">
+                                class="bg-gradient-to-br from-emerald-50 to-teal-50 p-10 border border-emerald-200 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                                 <div class="flex items-center mb-6">
                                     <i data-lucide="flag" class="w-12 h-12 text-emerald-600 mr-4"></i>
                                     <h3 class="text-3xl font-bold text-emerald-800">Misión</h3>
                                 </div>
-                                <p class="text-gray-700 text-xl leading-relaxed">Ser una empresa solida que distribuye
-                                    soluciones agricolas sostenibles con la asesoria tecnica de calidad y logistica
-                                    confiable, expandiendonos a mas regiones Ofrecer soluciones agrícolas
-                                    sostenibles e innovadoras que mejoren la rentabilidad de los agricultores,
-                                    promoviendo la salud del suelo y la seguridad alimentaria para las generaciones
-                                    futuras mediante tecnología accesible y asesoramiento experto.</p>
+                                <p class="text-gray-700 text-xl leading-relaxed">
+                                    Ofrecer soluciones agrícolas sostenibles e innovadoras que mejoren la rentabilidad
+                                    de los agricultores, promoviendo la salud del suelo y la seguridad alimentaria para
+                                    las generaciones futuras mediante tecnología accesible y asesoramiento experto.
+                                </p>
                             </div>
                             <div
-                                class="bg-gradient-to-br from-emerald-50 to-teal-50 p-10 border border-emerald-200 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4">
+                                class="bg-gradient-to-br from-emerald-50 to-teal-50 p-10 border border-emerald-200 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                                 <div class="flex items-center mb-6">
                                     <i data-lucide="rocket" class="w-12 h-12 text-emerald-600 mr-4"></i>
                                     <h3 class="text-3xl font-bold text-emerald-800">Visión 2030</h3>
                                 </div>
-                                <p class="text-gray-700 text-xl leading-relaxed">Ser una empresa solida, líder en
-                                    distribución y soluciones agricolas
-                                    en Latinoamérica, reconocida por nuestra calidad excepcional en nuestro
-                                    servicio y
-                                    asesoramiento especial.
-                                </p>
-                            </div>
-                            <div
-                                class="bg-gradient-to-br from-emerald-50 to-teal-50 p-10 border border-emerald-200 rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4">
-                                <div class="flex items-center mb-6">
-                                    <i data-lucide="heart" class="w-12 h-12 text-emerald-600 mr-4"></i>
-                                    <h3 class="text-3xl font-bold text-emerald-800">Valores</h3>
-                                </div>
                                 <p class="text-gray-700 text-xl leading-relaxed">
-                                    <li>Perseverancia</li>
-                                    constancia, persistencia y firmeza para no rendirse, aprender de los errores y creer
-                                    en sí mismo, siendo fundamental para el éxito, la madurez y el desarrollo personal.
-                                    <li>Honestidad</li>
-                                    Transparencia en precios y recomendaciones.
-                                    <li>Compromiso,</li>
-                                    Estar cerca del agricultor en cada necesidad.
-                                    <li>Responsabilidad,</li>
-                                    Cumplir con entregas en tiempo y forma.
-                                    <li>Trabajo en equipo,</li>
-                                    Colaboración interna para un mejor servicio.
-                                    <li>Calidad en el servicio:,</li>
-                                    Atención cercana y profesional.
-                                    <li>Responsabilidad Ambiental.</li>
-                                    Compromiso etico y personal de cuidar y respetar el medio ambiente.
-                                    Vivimos estos valores en cada
-                                    decisión.
+                                    Ser la empresa líder en soluciones orgánicas agrícolas en Latinoamérica, reconocida
+                                    por nuestra calidad excepcional en nuestro servicio y
+                                    asesoramiento especial, con una huella ambiental positiva que regenere ecosistemas.
                                 </p>
                             </div>
                         </div>
 
-                        <h3 class="text-4xl font-bold text-emerald-800 text-center mb-12">Análisis FODA Estratégico</h3>
+                        <div class="mt-20">
+                            <h3 class="text-4xl font-bold text-emerald-800 text-center mb-12">Nuestros Valores
+                                Fundamentales</h3>
+                            <div id="valores-accordion" class="max-w-4xl mx-auto space-y-4">
+                                <!-- Valor: Perseverancia -->
+                                <div>
+                                    <button class="accordion-valor-button">
+                                        <span class="flex items-center"><i data-lucide="trending-up"
+                                                class="w-6 h-6 mr-4"></i>Perseverancia</span>
+                                        <i data-lucide="plus" class="w-6 h-6 icon"></i>
+                                    </button>
+                                    <div class="accordion-valor-content">
+                                        <div class="accordion-valor-content-inner text-gray-700 text-lg">
+                                            Constancia, persistencia y firmeza para no rendirse, aprender de los errores
+                                            y creer en sí mismo, siendo fundamental para el éxito, la madurez y el
+                                            desarrollo personal.
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Valor: Honestidad -->
+                                <div>
+                                    <button class="accordion-valor-button">
+                                        <span class="flex items-center"><i data-lucide="shield-check"
+                                                class="w-6 h-6 mr-4"></i>Honestidad</span>
+                                        <i data-lucide="plus" class="w-6 h-6 icon"></i>
+                                    </button>
+                                    <div class="accordion-valor-content">
+                                        <div class="accordion-valor-content-inner text-gray-700 text-lg">
+                                            Transparencia total en nuestros precios, recomendaciones de productos y
+                                            asesoramiento técnico. La confianza de nuestros clientes es nuestro activo
+                                            más valioso.
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Valor: Compromiso -->
+                                <div>
+                                    <button class="accordion-valor-button">
+                                        <span class="flex items-center"><i data-lucide="handshake"
+                                                class="w-6 h-6 mr-4"></i>Compromiso</span>
+                                        <i data-lucide="plus" class="w-6 h-6 icon"></i>
+                                    </button>
+                                    <div class="accordion-valor-content">
+                                        <div class="accordion-valor-content-inner text-gray-700 text-lg">
+                                            Estar cerca del agricultor en cada etapa del ciclo de cultivo, entendiendo
+                                            sus desafíos y celebrando sus éxitos como si fueran nuestros.
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Valor: Responsabilidad -->
+                                <div>
+                                    <button class="accordion-valor-button">
+                                        <span class="flex items-center"><i data-lucide="check-circle"
+                                                class="w-6 h-6 mr-4"></i>Responsabilidad</span>
+                                        <i data-lucide="plus" class="w-6 h-6 icon"></i>
+                                    </button>
+                                    <div class="accordion-valor-content">
+                                        <div class="accordion-valor-content-inner text-gray-700 text-lg">
+                                            Cumplir rigurosamente con nuestros compromisos de entrega en tiempo y forma,
+                                            asegurando que nuestros clientes tengan lo que necesitan, cuando lo
+                                            necesitan.
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Valor: Trabajo en Equipo -->
+                                <div>
+                                    <button class="accordion-valor-button">
+                                        <span class="flex items-center"><i data-lucide="users"
+                                                class="w-6 h-6 mr-4"></i>Trabajo en equipo</span>
+                                        <i data-lucide="plus" class="w-6 h-6 icon"></i>
+                                    </button>
+                                    <div class="accordion-valor-content">
+                                        <div class="accordion-valor-content-inner text-gray-700 text-lg">
+                                            Fomentar la colaboración interna entre todos los departamentos para ofrecer
+                                            un servicio integral, ágil y de la más alta calidad a nuestros clientes.
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Valor: Calidad en el Servicio -->
+                                <div>
+                                    <button class="accordion-valor-button">
+                                        <span class="flex items-center"><i data-lucide="award"
+                                                class="w-6 h-6 mr-4"></i>Calidad en el Servicio</span>
+                                        <i data-lucide="plus" class="w-6 h-6 icon"></i>
+                                    </button>
+                                    <div class="accordion-valor-content">
+                                        <div class="accordion-valor-content-inner text-gray-700 text-lg">
+                                            Brindar una atención cercana, profesional y personalizada, asegurando que
+                                            cada interacción con Agronare aporte valor y conocimiento al productor.
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Valor: Responsabilidad Ambiental -->
+                                <div>
+                                    <button class="accordion-valor-button">
+                                        <span class="flex items-center"><i data-lucide="leaf"
+                                                class="w-6 h-6 mr-4"></i>Responsabilidad Ambiental</span>
+                                        <i data-lucide="plus" class="w-6 h-6 icon"></i>
+                                    </button>
+                                    <div class="accordion-valor-content">
+                                        <div class="accordion-valor-content-inner text-gray-700 text-lg">
+                                            Un compromiso ético y personal de promover prácticas agrícolas que cuiden y
+                                            respeten el medio ambiente, garantizando la salud de la tierra para las
+                                            futuras generaciones.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 class="text-4xl font-bold text-emerald-800 text-center mb-12 mt-24">Análisis FODA
+                            Estratégico</h3>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                             <div
-                                class="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-3xl p-10 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4">
+                                class="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-3xl p-10 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                                 <div class="flex items-center mb-8">
                                     <i data-lucide="shield-check" class="w-14 h-14 text-green-600 mr-5"></i>
-                                    <h4 class="text-3xl font-bold text-green-700">Fortalezas Clave</h4>
+                                    <h4 class="text-3xl font-bold text-green-700">Fortalezas</h4>
                                 </div>
-                                <ul class="list-disc list-inside space-y-5 mb-8 text-gray-700 text-xl">
-                                    <li>Experiencia técnica del fundador con más de 30 años en el sector agrícola.</li>
-                                    <li>Productos innovadores y sostenibles certificados.</li>
-                                    <li>Asesoramiento técnico personalizado y continuo a nuestros clientes con
-                                        seguimiento post-venta.</li>
-                                    <li>Red de distribución establecida en 3 municipios del estado de Michoacán con
-                                        centros accesibles de
-                                        soporte.</li>
-                                    <li>VARIEDAD DE MARCAS Y PRODUCTOSPRODUCTOS.</li>
+                                <ul class="list-disc list-inside space-y-4 text-gray-700 text-lg">
+                                    <li><strong>Experiencia técnica del fundador:</strong> con más de 25 años de
+                                        experiencia en el
+                                        sector agrícola y con profundo conocimiento del campo.</li>
+                                    <li><strong>Modelo de Negocio Diferenciado:</strong> Combinación única de asesoría
+                                        técnica de alto valor y un portafolio de productos diversificado.</li>
+                                    <li><strong>Red de Distribución Estratégica:</strong> Presencia física en municipios
+                                        agrícolas clave, garantizando cercanía con el cliente.</li>
+                                    <li><strong>Portafolio Adaptable:</strong> Oferta de soluciones convencionales,
+                                        biológicas y orgánicas que responde a diversas necesidades del mercado.</li>
                                 </ul>
-                                <div class="border-t-2 border-green-200 pt-8">
-                                    <h5 class="font-bold text-green-800 text-2xl mb-4 flex items-center">
-                                        <i data-lucide="lightbulb" class="w-6 h-6 mr-3"></i>
-                                        Implicaciones Estratégicas (FO):
-                                    </h5>
-                                    <p class="text-gray-600 text-lg leading-relaxed">Capitalizar nuestra experiencia
-                                        técnica para desarrollar productos patentables que satisfagan la demanda
-                                        orgánica creciente y expandirnos a nuevos mercados internacionales mediante
-                                        alianzas estratégicas con cooperativas agrícolas latinoamericanas.</p>
+                                <div class="border-t-2 border-green-200 pt-6 mt-6">
+                                    <h5 class="font-bold text-green-800 text-xl mb-3 flex items-center"><i
+                                            data-lucide="zap" class="w-5 h-5 mr-2"></i>Estrategias Ofensivas (FO)</h5>
+                                    <p class="text-gray-600">Utilizar la experiencia técnica del fundador para liderar
+                                        el mercado de
+                                        agricultura sostenible y expandir el modelo de asesoría a nuevas regiones con
+                                        potencial AgriTech; Capitalizar nuestra experiencia técnica para desarrollar
+                                        productos patentables que satisfagan la demanda orgánica creciente y expandirnos
+                                        a nuevos mercados internacionales.</p>
                                 </div>
                             </div>
                             <div
-                                class="bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-3xl p-10 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4">
+                                class="bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-3xl p-10 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                                 <div class="flex items-center mb-8">
                                     <i data-lucide="trending-up" class="w-14 h-14 text-blue-600 mr-5"></i>
-                                    <h4 class="text-3xl font-bold text-blue-700">Oportunidades de Mercado</h4>
+                                    <h4 class="text-3xl font-bold text-blue-700">Oportunidades</h4>
                                 </div>
-                                <ul class="list-disc list-inside space-y-5 mb-8 text-gray-700 text-xl">
-                                    <li>Creciente demanda global de productos orgánicos y sostenibles proyectada en 12%
-                                        anual hasta 2030.</li>
-                                    <li>Acceso a nuevos mercados mediante alianzas con cooperativas agrícolas y
-                                        plataformas B2B digitales.</li>
-                                    <li>Incentivos gubernamentales a la agricultura sostenible y tecnológica que superan
-                                        los $50M anuales.</li>
-                                    <li>Desarrollo de plataformas digitales para comercio electrónico B2B con
-                                        inteligencia predictiva.</li>
-                                    <li>Colaboración con universidades para investigación conjunta y acceso a talento
-                                        especializado.</li>
+                                <ul class="list-disc list-inside space-y-4 text-gray-700 text-lg">
+                                    <li><strong>Crecimiento del Mercado Sostenible:</strong> Aumento en la demanda
+                                        global y nacional de productos orgánicos y de bajo impacto ambiental.</li>
+                                    <li><strong>Digitalización del Sector (AgriTech):</strong> Adopción de tecnologías
+                                        para la gestión de cultivos, e-commerce B2B y análisis de datos.</li>
+                                    <li><strong>Acceso a Nuevos Mercados:</strong> Potencial de expansión a otras
+                                        regiones de México y Latinoamérica a través de alianzas estratégicas.</li>
+                                    <li><strong>Políticas y Financiamiento Verde:</strong> Disponibilidad de incentivos
+                                        gubernamentales y fondos de inversión enfocados en la sostenibilidad.</li>
+                                    <li><strong>Desarrollo de plataformas:</strong> Desarrollo de plataformas digitales
+                                        para comercio electrónico B2B con inteligencia predictiva.</li>
+                                    <li><strong>Colaboración con universidades:</strong> Colaboración con universidades
+                                        para investigación conjunta y acceso a talento especializado</li>
                                 </ul>
-                                <div class="border-t-2 border-blue-200 pt-8">
-                                    <h5 class="font-bold text-blue-800 text-2xl mb-4 flex items-center">
-                                        <i data-lucide="zap" class="w-6 h-6 mr-3"></i>
-                                        Implicaciones Estratégicas (DO):
-                                    </h5>
-                                    <p class="text-gray-600 text-lg leading-relaxed">Buscar financiamiento o alianzas
-                                        estratégicas para fortalecer el capital y mejorar la visibilidad de mercado,
-                                        aprovechando la demanda creciente y las tendencias de consumo responsable
-                                        mediante una narrativa de impacto social y ambiental.</p>
+                                <div class="border-t-2 border-blue-200 pt-6 mt-6">
+                                    <h5 class="font-bold text-blue-800 text-xl mb-3 flex items-center"><i
+                                            data-lucide="shuffle" class="w-5 h-5 mr-2"></i>Estrategias de Reorientación
+                                        (DO)</h5>
+                                    <p class="text-gray-600">Buscar capital de VCs o fondos de impacto para financiar la
+                                        adopción tecnológica (ERP/CRM) y lanzar una estrategia de marketing digital para
+                                        posicionar la marca a nivel nacional.</p>
                                 </div>
                             </div>
                             <div
-                                class="bg-gradient-to-br from-yellow-50 to-amber-50 border border-yellow-200 rounded-3xl p-10 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4">
+                                class="bg-gradient-to-br from-yellow-50 to-amber-50 border border-yellow-200 rounded-3xl p-10 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                                 <div class="flex items-center mb-8">
                                     <i data-lucide="alert-triangle" class="w-14 h-14 text-yellow-600 mr-5"></i>
-                                    <h4 class="text-3xl font-bold text-yellow-700">Debilidades a Superar</h4>
+                                    <h4 class="text-3xl font-bold text-yellow-700">Debilidades</h4>
                                 </div>
-                                <ul class="list-disc list-inside space-y-5 mb-8 text-gray-700 text-xl">
-                                    <li>Alta dependencia de financiamiento externo para expansión y desarrollo de
-                                        productos.</li>
-                                    <li>Visibilidad de marca limitada a nivel nacional con escasa presencia digital
-                                        internacional.</li>
-                                    <li>Procesos operativos parcialmente estandarizados sin integración de sistemas
-                                        automatizados.</li>
-                                    <li>Infraestructura tecnológica básica sin plataforma ERP ni CRM centralizada.</li>
-                                    <li>Capacidad limitada de producción que requiere inversión en nuevas instalaciones.
+                                <ul class="list-disc list-inside space-y-4 text-gray-700 text-lg">
+                                    <li><strong>Dependencia Financiera:</strong> El crecimiento acelerado y la
+                                        innovación dependen de la reinversión de utilidades o de financiamiento externo.
+                                    </li>
+                                    <li><strong>Bajo Posicionamiento de Marca:</strong> La marca es fuerte a nivel
+                                        local, pero tiene baja visibilidad en el panorama nacional e internacional.</li>
+                                    <li><strong>Escalabilidad Operativa Limitada:</strong> Los procesos manuales
+                                        actuales podrían limitar la capacidad de gestionar un crecimiento rápido y
+                                        eficiente.</li>
+                                    <li><strong>Infraestructura Tecnológica en Desarrollo:</strong> Ausencia de sistemas
+                                        integrados (ERP, CRM) que centralicen la información y automaticen procesos.
                                     </li>
                                 </ul>
-                                <div class="border-t-2 border-yellow-200 pt-8">
-                                    <h5 class="font-bold text-yellow-800 text-2xl mb-4 flex items-center">
-                                        <i data-lucide="arrow-up" class="w-6 h-6 mr-3"></i>
-                                        Implicaciones Estratégicas (ST):
+                                <div class="border-t-2 border-yellow-200 pt-6 mt-6">
+                                    <h5 class="font-bold text-yellow-800 text-xl mb-3 flex items-center"><i
+                                            data-lucide="shield" class="w-5 h-5 mr-2"></i>Estrategias Defensivas (ST)
                                     </h5>
-                                    <p class="text-gray-600 text-lg leading-relaxed">Diferenciar nuestros productos
-                                        mediante certificaciones de calidad y sostenibilidad adicionales (como Fair
-                                        Trade y Carbon Neutral) para competir eficazmente y fidelizar clientes,
-                                        invirtiendo en marketing digital estratégico y relaciones públicas
-                                        internacionales.</p>
+                                    <p class="text-gray-600">Usar el modelo de asesoría personalizada para fidelizar
+                                        clientes y crear una barrera de entrada contra competidores de gran escala.
+                                        Diversificar la cartera de proveedores para mitigar riesgos en la cadena de
+                                        suministro.</p>
                                 </div>
                             </div>
                             <div
-                                class="bg-gradient-to-br from-red-50 to-pink-50 border border-red-200 rounded-3xl p-10 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4">
+                                class="bg-gradient-to-br from-red-50 to-pink-50 border border-red-200 rounded-3xl p-10 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                                 <div class="flex items-center mb-8">
                                     <i data-lucide="alert-octagon" class="w-14 h-14 text-red-600 mr-5"></i>
-                                    <h4 class="text-3xl font-bold text-red-700">Amenazas Externas</h4>
+                                    <h4 class="text-3xl font-bold text-red-700">Amenazas</h4>
                                 </div>
-                                <ul class="list-disc list-inside space-y-5 mb-8 text-gray-700 text-xl">
-                                    <li>Fuerte competencia de empresas internacionales con mayor capacidad económica y
-                                        distribución global.</li>
-                                    <li>Volatilidad extrema en los precios de materias primas y insumos debido a
-                                        factores geopolíticos.</li>
-                                    <li>Cambios regulatorios ambientales estrictos y constantes que requieren adaptación
-                                        continua.</li>
-                                    <li>Persistencia de prácticas agrícolas convencionales con subsidios gubernamentales
-                                        significativos.</li>
-                                    <li>Riesgos climáticos crecientes que afectan la disponibilidad de materias primas
-                                        naturales.</li>
+                                <ul class="list-disc list-inside space-y-4 text-gray-700 text-lg">
+                                    <li><strong>Competencia Consolidada:</strong> Grandes jugadores nacionales e
+                                        internacionales con mayor poder de negociación y economías de escala.</li>
+                                    <li><strong>Volatilidad de la Cadena de Suministro:</strong> Fluctuaciones en
+                                        precios de materias primas y logística debido a factores geopolíticos y
+                                        económicos.</li>
+                                    <li><strong>Riesgos Climáticos y Regulatorios:</strong> Cambios en el clima que
+                                        afectan los cultivos y nuevas regulaciones ambientales que exigen adaptación
+                                        constante.</li>
+                                    <li><strong>Barreras de Adopción Tecnológica:</strong> Resistencia al cambio por
+                                        parte de agricultores tradicionales para adoptar nuevas prácticas y tecnologías.
+                                    </li>
                                 </ul>
-                                <div class="border-t-2 border-red-200 pt-8">
-                                    <h5 class="font-bold text-red-800 text-2xl mb-4 flex items-center">
-                                        <i data-lucide="shield" class="w-6 h-6 mr-3"></i>
-                                        Implicaciones Estratégicas (WT):
-                                    </h5>
-                                    <p class="text-gray-600 text-lg leading-relaxed">Estandarizar procesos completamente
-                                        para mejorar la eficiencia y reducir costos operativos en un 15%. Desarrollar
-                                        una estrategia de marketing digital robusta para construir la marca y comunicar
-                                        nuestro valor diferencial de sostenibilidad mediante storytelling auténtico y
-                                        datos verificables.</p>
+                                <div class="border-t-2 border-red-200 pt-6 mt-6">
+                                    <h5 class="font-bold text-red-800 text-xl mb-3 flex items-center"><i
+                                            data-lucide="minimize-2" class="w-5 h-5 mr-2"></i>Estrategias de
+                                        Supervivencia (WT)</h5>
+                                    <p class="text-gray-600">Priorizar la inversión en la estandarización de procesos y
+                                        la implementación de un ERP para maximizar la eficiencia y competir en costos.
+                                        Enfocarse en nichos de alto valor donde el servicio personalizado sea el mayor
+                                        diferenciador.</p>
                                 </div>
                             </div>
                         </div>
                     </section>
+
 
                     <!-- Pestaña 3: Objetivos -->
                     <section id="objetivos" class="tab-content">
@@ -965,9 +1174,9 @@
                                 </div>
                                 <div class="mt-8 p-6 bg-emerald-50 rounded-2xl border border-emerald-200">
                                     <p class="text-sm text-emerald-800 font-semibold mb-2">Meta estratégica:</p>
-                                    <p class="text-xl text-emerald-900 font-bold">Alcanzar 25% de participación de
+                                    <p class="text-xl text-emerald-900 font-bold">Alcanzar 8% de participación de
                                         mercado nacional en 2 años</p>
-                                    <p class="text-sm text-emerald-700 mt-2">Actual: 10%</p>
+                                    <p class="text-sm text-emerald-700 mt-2">Actual: 1%</p>
                                 </div>
                             </div>
                             <div class="metric-card">
@@ -1011,9 +1220,9 @@
                                 </div>
                                 <div class="mt-8 p-6 bg-emerald-50 rounded-2xl border border-emerald-200">
                                     <p class="text-sm text-emerald-800 font-semibold mb-2">Meta estratégica:</p>
-                                    <p class="text-xl text-emerald-900 font-bold">Entrar a 1 mercado internacional en 2
+                                    <p class="text-xl text-emerald-900 font-bold">Entrar a 1 mercado internacional en 3
                                         años</p>
-                                    <p class="text-sm text-emerald-700 mt-2">Países en evaluación: 3</p>
+                                    <p class="text-sm text-emerald-700 mt-2">Países en evaluación: 1</p>
                                 </div>
                             </div>
                         </div>
@@ -1027,12 +1236,12 @@
                                         <th scope="col" class="px-8 py-6">Departamento</th>
                                         <th scope="col" class="px-8 py-6">KPI principal</th>
                                         <th scope="col" class="px-8 py-6">KPI Secundario</th>
-                                        <th scope="col" class="px-8 py-6">Meta (trimestral)</th>
+                                        <th scope="col" class="px-8 py-6">Meta (Anual)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr class="border-b hover:bg-gray-50">
-                                        <td class="px-8 py-6 font-medium">Venta en Mostrador</td>
+                                        <td class="px-8 py-6 font-medium">Venta</td>
                                         <td class="px-8 py-6">Volumen de Ventas ($)</td>
                                         <td class="px-8 py-6">Tasa de Conversión (%)</td>
                                         <td class="px-8 py-6">> $1,500,000 MXN / > 5%</td>
@@ -1071,7 +1280,7 @@
                                         <td class="px-8 py-6 font-medium">I+D</td>
                                         <td class="px-8 py-6">Productos Nuevos/Año</td>
                                         <td class="px-8 py-6">Tiempo Desarrollo (días)</td>
-                                        <td class="px-8 py-6">> 2 / < 120</td>
+                                        <td class="px-8 py-6">> 2 / < 185</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1088,7 +1297,6 @@
                                 sus funciones, KPI e interacciones clave que crean valor para nuestros clientes.</p>
                         </div>
                         <div id="organigrama-contenedor" class="text-center overflow-x-auto p-8 flex justify-center">
-                            <!-- Estructura del organigrama mejorado -->
                             <div class="organigrama-container-new">
                                 <div class="organigrama-level ceo-level">
                                     <div class="organigrama-node-wrapper">
@@ -1342,7 +1550,7 @@
                                     <div class="flowchart-step">
                                         <strong>Ventas</strong><br />
                                         Contacto Inicial Y Seguimiento de venta<br />
-                                        <span class="text-sm text-gray-500 mt-2 block">Duración: 1-2 días</span>
+                                        <span class="text-sm text-gray-500 mt-2 block">Duración: Indefinido</span>
                                     </div>
                                     <div class="flowchart-arrow"></div>
                                     <div class="flowchart-step">
@@ -1365,7 +1573,7 @@
                                     <div class="flowchart-arrow"></div>
                                     <div class="flowchart-step">
                                         <strong>Ventas</strong><br />
-                                        Recoleccion, Preparación y entrega de Pedido<br />
+                                        Preparación, Recoleccion y entrega de Pedido<br />
                                         <span class="text-sm text-gray-500 mt-2 block">Duración: 24 horas</span>
                                     </div>
                                     <div class="flowchart-arrow"></div>
@@ -1380,9 +1588,12 @@
                                         <i data-lucide="award" class="w-6 h-6 mr-3"></i>
                                         Mejora Reciente:
                                     </h4>
-                                    <p class="text-gray-700 text-lg">Implementamos un sistema de seguimiento GPS en
-                                        tiempo real para todos nuestros envíos, lo que ha reducido las entregas tardías
-                                        en un 35% y mejorado la satisfacción del cliente en un 28%.</p>
+                                    <p class="text-gray-700 text-lg">Implementamos un sistema de automatización para dar
+                                        un
+                                        seguimiento a nuestros procesos en
+                                        tiempo real para todos nuestros envíos y servicios de asesorias, lo que
+                                        ha reducido las entregas tardías
+                                        en un 85% y mejorado la satisfacción del cliente en un 99%.</p>
                                 </div>
                             </div>
 
@@ -1423,8 +1634,9 @@
                                         Mejora Reciente:
                                     </h4>
                                     <p class="text-gray-700 text-lg">Desarrollamos un sistema de evaluación de
-                                        proveedores con 15 criterios de sostenibilidad, lo que ha mejorado la calidad de
-                                        nuestros insumos en un 42% y reducido costos en un 7% anual.</p>
+                                        proveedores para una mayor sostenibilidad, lo que ha mejorado la calidad de
+                                        nuestros insumos y proceso mas eficiente en un 99% y reducido costos en un 5%
+                                        anual.</p>
                                 </div>
                             </div>
 
@@ -1462,12 +1674,13 @@
                                 <div class="mt-10 process-highlight">
                                     <h4 class="font-bold text-emerald-800 text-xl mb-3 flex items-center">
                                         <i data-lucide="award" class="w-6 h-6 mr-3"></i>
-                                        Mejora Reciente:
+                                        Futura Implementación:
                                     </h4>
-                                    <p class="text-gray-700 text-lg">Implementamos pruebas con agricultores reales en
-                                        nuestras "granjas piloto" antes del lanzamiento comercial, lo que ha reducido
-                                        los errores de producto en un 68% y acelerado el tiempo de comercialización en
-                                        un 30%.</p>
+                                    <p class="text-gray-700 text-lg">Implementaremos un sistema de pruebas con
+                                        agricultores reales en
+                                        nuestras "granjas piloto" antes del lanzamiento comercial, lo que dara un
+                                        crecimiento expontencial en ventas y acelerado el tiempo de comercialización en
+                                        un 50%.</p>
                                 </div>
                             </div>
 
@@ -1522,26 +1735,26 @@
                                 </div>
                                 <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-0">
                                     <div class="flowchart-step">
-                                        <strong>Logística</strong><br />
-                                        Inspección de Flota y Maquinaria<br />
+                                        <strong>Director Administrativo</strong><br />
+                                        Inspección de Equipo y Maquinaria<br />
                                         <span class="text-sm text-gray-500 mt-2 block">Frecuencia: Semanal</span>
                                     </div>
                                     <div class="flowchart-arrow"></div>
                                     <div class="flowchart-step">
                                         <strong>Administración</strong><br />
-                                        Planificación de Mantenimiento Correctivo y Preventivo<br />
+                                        Planificación y seguimiento de procesos, Correctivo y Preventivo<br />
                                         <span class="text-sm text-gray-500 mt-2 block">Duración: 24 horas</span>
                                     </div>
                                     <div class="flowchart-arrow"></div>
                                     <div class="flowchart-step">
-                                        <strong>Sostenibilidad</strong><br />
-                                        Monitoreo de Huella de Carbono<br />
-                                        <span class="text-sm text-gray-500 mt-2 block">Frecuencia: Mensual</span>
+                                        <strong>CEO</strong><br />
+                                        Gestion y Monitoreo de Procesos<br />
+                                        <span class="text-sm text-gray-500 mt-2 block">Supervición</span>
                                     </div>
                                     <div class="flowchart-arrow"></div>
                                     <div class="flowchart-step">
-                                        <strong>Logística/Sostenibilidad</strong><br />
-                                        Optimización de Consumo de Combustible<br />
+                                        <strong>CEO/Director Administrativo</strong><br />
+                                        Control y Optimización de los recursos<br />
                                         <span class="text-sm text-gray-500 mt-2 block">Duración: Continuo</span>
                                     </div>
                                 </div>
@@ -1550,10 +1763,11 @@
                                         <i data-lucide="award" class="w-6 h-6 mr-3"></i>
                                         Mejora Reciente:
                                     </h4>
-                                    <p class="text-gray-700 text-lg">La implementación de un sistema de telemetría en
-                                        nuestros vehículos ha permitido optimizar rutas, reduciendo el consumo de
-                                        combustible en un 15% y nuestra huella de carbono en un 8% en el último
-                                        trimestre.</p>
+                                    <p class="text-gray-700 text-lg">La implementación de un nuevo sistema en plataforma
+                                        digital permitira optimizar rutas y nos dara la oportunidad de ofrecer un mejor
+                                        servicio, reduciendo nuestros costos 15% y un incremento en nuestras ventas en
+                                        un 30%
+                                        destacando nuestro modelo de negocio ante la Competencia.</p>
                                 </div>
                             </div>
                         </div>
@@ -1581,49 +1795,49 @@
                                             <tr>
                                                 <th class="px-8 py-6">Área Funcional</th>
                                                 <th class="px-8 py-6">Tipo de software</th>
-                                                <th class="px-8 py-6">Ejemplo</th>
+                                                <th class="px-8 py-6">Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr class="border-b hover:bg-gray-50">
                                                 <td class="px-8 py-6 font-medium">Ventas y marketing</td>
-                                                <td class="px-8 py-6">CRM</td>
-                                                <td class="px-8 py-6">HubSpot / Zoho CRM</td>
+                                                <td class="px-8 py-6">Modulo CRM, Red Social</td>
+                                                <td class="px-8 py-6">En ejecución ✅</td>
                                             </tr>
                                             <tr class="border-b hover:bg-gray-50">
                                                 <td class="px-8 py-6 font-medium">Operaciones y Finanzas</td>
-                                                <td class="px-8 py-6">ERP</td>
-                                                <td class="px-8 py-6">Odoo / SAP Business One</td>
+                                                <td class="px-8 py-6">Modulo ERP</td>
+                                                <td class="px-8 py-6">En ejecución ✅</td>
                                             </tr>
                                             <tr class="border-b hover:bg-gray-50">
                                                 <td class="px-8 py-6 font-medium">Comunicación interna</td>
-                                                <td class="px-8 py-6">Plataforma colaborativa</td>
-                                                <td class="px-8 py-6">Microsoft Teams / Slack</td>
+                                                <td class="px-8 py-6">Plataforma colaborativa Agronare</td>
+                                                <td class="px-8 py-6">En ejecución ✅</td>
                                             </tr>
                                             <tr class="border-b hover:bg-gray-50">
                                                 <td class="px-8 py-6 font-medium">Gestión de Proyectos</td>
                                                 <td class="px-8 py-6">Software de Proyectos</td>
-                                                <td class="px-8 py-6">Asana / Trello</td>
+                                                <td class="px-8 py-6">En ejecución ✅</td>
                                             </tr>
                                             <tr class="border-b hover:bg-gray-50">
                                                 <td class="px-8 py-6 font-medium">Automatización de Procesos</td>
-                                                <td class="px-8 py-6">RPA</td>
-                                                <td class="px-8 py-6">UiPath / Automation Anywhere</td>
+                                                <td class="px-8 py-6">Modulo RPA</td>
+                                                <td class="px-8 py-6">En ejecución ✅</td>
                                             </tr>
                                             <tr class="border-b hover:bg-gray-50">
                                                 <td class="px-8 py-6 font-medium">Análisis de Datos</td>
-                                                <td class="px-8 py-6">BI</td>
-                                                <td class="px-8 py-6">Power BI / Tableau</td>
+                                                <td class="px-8 py-6">Modulo BI</td>
+                                                <td class="px-8 py-6">En ejecución ✅</td>
                                             </tr>
                                             <tr class="border-b hover:bg-gray-50">
                                                 <td class="px-8 py-6 font-medium">Control de Calidad</td>
-                                                <td class="px-8 py-6">LIMS</td>
-                                                <td class="px-8 py-6">LabWare / STARLIMS</td>
+                                                <td class="px-8 py-6">Modulo LIMS</td>
+                                                <td class="px-8 py-6">En ejecución ✅</td>
                                             </tr>
                                             <tr class="border-b hover:bg-gray-50">
                                                 <td class="px-8 py-6 font-medium">Trazabilidad</td>
-                                                <td class="px-8 py-6">Blockchain</td>
-                                                <td class="px-8 py-6">Hyperledger / VeChain</td>
+                                                <td class="px-8 py-6">Modulo Blockchain</td>
+                                                <td class="px-8 py-6">En Desarrollo 🔁</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -2046,7 +2260,7 @@
                                 colaboraciones: ['Ventas', 'Compras', 'Administración', 'Clientes', 'Proveedores']
                             },
                             {
-                                nombre: 'Ing.Raúl González Salas',
+                                nombre: 'Lic. Luis Ángel García Mendoza',
                                 titulo: 'Gerente de Marketing',
                                 responsabilidades: 'Estrategia de marca, campañas digitales, relaciones públicas, análisis de mercado, gestión de redes sociales.',
                                 kpis: ['Crecimiento Seguidores (%)', 'ROI Campañas (%)', 'Presencia Digital', 'Notoriedad de Marca'],
@@ -2074,13 +2288,6 @@
                                 responsabilidades: 'Diseño de experimentos, pruebas de producto, análisis de datos, documentación técnica, validación científica.',
                                 kpis: ['Experimentos Completados', 'Resultados Positivos (%)', 'Publicaciones', 'Proyectos Innovadores'],
                                 colaboraciones: ['Laboratorios', 'Universidades', 'Reguladores', 'Campo']
-                            },
-                            {
-                                nombre: 'VACANTE',
-                                titulo: 'Especialista en Sostenibilidad',
-                                responsabilidades: 'Certificaciones ambientales, huella de carbono, prácticas agrícolas regenerativas, reportes de sostenibilidad.',
-                                kpis: ['Reducción Emisiones (%)', 'Certificaciones Obtenidas', 'Impacto Social', 'Eficiencia Recursos'],
-                                colaboraciones: ['Todos los departamentos', 'ONGs', 'Gobierno', 'Comunidades']
                             },
                             {
                                 nombre: 'Lic. Luis Ángel García Mendoza',
@@ -2164,6 +2371,37 @@
                     }
                 });
             }
+
+            // Valores Accordion
+            const valoresAccordion = document.getElementById('valores-accordion');
+            if (valoresAccordion) {
+                const buttons = valoresAccordion.querySelectorAll('.accordion-valor-button');
+                buttons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        // Close other open items
+                        buttons.forEach(otherButton => {
+                            if (otherButton !== button) {
+                                otherButton.classList.remove('active');
+                                const otherContent = otherButton.nextElementSibling;
+                                otherContent.style.maxHeight = null;
+                                otherContent.style.opacity = 0;
+                            }
+                        });
+
+                        // Toggle clicked item
+                        button.classList.toggle('active');
+                        const content = button.nextElementSibling;
+                        if (content.style.maxHeight) {
+                            content.style.maxHeight = null;
+                            content.style.opacity = 0;
+                        } else {
+                            content.style.maxHeight = content.scrollHeight + "px";
+                            content.style.opacity = 1;
+                        }
+                    });
+                });
+            }
+
         });
     </script>
 </body>
